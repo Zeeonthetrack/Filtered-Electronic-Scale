@@ -202,7 +202,7 @@ uint32_t filter_update(MovingAverageFilter *filter, uint16_t new_sample) {
 }
 MovingAverageFilter filter;
 
-static uint32_t display_buffer[10005] = {0};
+
 
 int main(void)
 {
@@ -220,12 +220,133 @@ int main(void)
 	PB_BIT(13)=0;
 	PB_BIT(14)=0;
 	PB_BIT(15)=0;
+    
+    // ====== 参数调整部分 ======
+    // 1. 增加中值滤波窗口大小
+    #define MEDIAN_FILTER_SIZE 7  // 从5增加到7，更稳定但响应稍慢
+    
+    // 2. 添加IIR低通滤波参数
+    #define IIR_ALPHA 0.5f        // 低通滤波系数 (0.1-0.5之间，越小越平滑)
+    
+    // 3. 调整显示阈值参数
+    #define DISPLAY_THRESHOLD 300 // 从157增加到200，减少频繁更新
+    #define DISPLAY_TIMEOUT 3000  // 超时时间稍作增加
+    
+    // ====== 变量定义部分 ======
+    static uint32_t median_buffer[MEDIAN_FILTER_SIZE] = {0};
+    static uint8_t median_index = 0;
+    static uint8_t median_initialized = 0;
+    
+    static int32_t accumulated_change = 0;
+    static uint32_t display_timeout_counter = 0;
+    static uint32_t last_display_adc = 0;
+    static uint32_t display_value = 0;
+	static uint32_t pi_value = 0;
+    
+    // 新增：IIR低通滤波变量
+    static float iir_filtered = 0.0f;
+    
+    // 新增：噪声阈值检测变量
+    #define NOISE_THRESHOLD 50
+    static uint32_t last_raw_adc = 0;
+    static uint8_t high_noise_detected = 0;
+    
     while(1)
 	{
 		raw_adc = read_adc();
+        
+        // ====== 新增：噪声检测 ======
+        // 检测原始ADC的突变，判断是否为高频噪声
+        uint32_t raw_adc_change = abs(raw_adc - last_raw_adc);
+        if (raw_adc_change > NOISE_THRESHOLD) {
+            high_noise_detected = 1;
+        } else {
+            high_noise_detected = 0;
+        }
+        last_raw_adc = raw_adc;
+        
         filtered_adc = filter_update(&filter, raw_adc);
-        displayNumberOnTube(filtered_adc/10);
-		
+        
+        // ====== 中值滤波 ======
+        median_buffer[median_index] = filtered_adc;
+        median_index = (median_index + 1) % MEDIAN_FILTER_SIZE;
+        
+        if (!median_initialized && median_index == 0) {
+            median_initialized = 1;
+        }
+        
+        uint32_t median_filtered_adc;
+        if (median_initialized) {
+            // 复制到临时数组进行排序
+            uint32_t temp_buffer[MEDIAN_FILTER_SIZE];
+            for (uint8_t i = 0; i < MEDIAN_FILTER_SIZE; i++) {
+                temp_buffer[i] = median_buffer[i];
+            }
+            
+            // 使用选择排序（比冒泡排序效率稍高）
+            for (uint8_t i = 0; i < MEDIAN_FILTER_SIZE - 1; i++) {
+                uint8_t min_idx = i;
+                for (uint8_t j = i + 1; j < MEDIAN_FILTER_SIZE; j++) {
+                    if (temp_buffer[j] < temp_buffer[min_idx]) {
+                        min_idx = j;
+                    }
+                }
+                if (min_idx != i) {
+                    uint32_t temp = temp_buffer[i];
+                    temp_buffer[i] = temp_buffer[min_idx];
+                    temp_buffer[min_idx] = temp;
+                }
+            }
+            median_filtered_adc = temp_buffer[MEDIAN_FILTER_SIZE / 2];
+        } else {
+            median_filtered_adc = filtered_adc;
+        }
+        
+        // ====== 新增：IIR低通滤波 ======
+        // 一阶IIR低通滤波：y[n] = α * x[n] + (1-α) * y[n-1]
+        if (iir_filtered == 0.0f) {
+            // 第一次初始化
+            iir_filtered = (float)median_filtered_adc;
+        } else {
+            iir_filtered = IIR_ALPHA * (float)median_filtered_adc + (1.0f - IIR_ALPHA) * iir_filtered;
+        }
+        
+        uint32_t final_filtered_adc = (uint32_t)iir_filtered;
+        
+        // ====== 优化显示逻辑 ======
+        // 当检测到高频噪声时，增加阈值以防止误更新
+        uint32_t actual_threshold = DISPLAY_THRESHOLD;
+        if (high_noise_detected) {
+            actual_threshold = DISPLAY_THRESHOLD * 2; // 噪声大时提高阈值
+        }
+        
+        // 计算累计变化
+        int32_t current_change = final_filtered_adc - last_display_adc;
+        accumulated_change += current_change;
+        
+        // 只有当累计变化超过阈值时才更新显示
+        if (abs(accumulated_change) > actual_threshold)
+        {
+            display_value = final_filtered_adc / 10;
+            last_display_adc = final_filtered_adc;
+            accumulated_change = 0;
+            display_timeout_counter = 0;
+        }
+        // 超时更新（防止长期小变化不更新）
+        else
+        {
+            display_timeout_counter++;
+            if (display_timeout_counter >= DISPLAY_TIMEOUT)
+            {
+                display_value = final_filtered_adc / 10;
+                last_display_adc = final_filtered_adc;
+                accumulated_change = 0;
+                display_timeout_counter = 0;
+            }
+        }
+        
+        // 持续调用显示函数进行动态扫描
+        displayNumberOnTube(display_value-pi_value);
 		
 		
 		WDT->WDT_CON |= WDT_CON_CLRWDT;  //清watchdog
@@ -239,10 +360,12 @@ int main(void)
 					ChangeTouchKeyvalue();   // 按键数据处理函数
 					if(exKeyValue==1)
 					{
+						pi_value = display_value; 
 						PB_OT(10);
 					}
 					if(exKeyValue==2)
 					{
+						pi_value = 0;
 						PB_OT(13);
 					}
 					if(exKeyValue==3)
