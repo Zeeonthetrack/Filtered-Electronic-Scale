@@ -131,6 +131,66 @@ void SC_GPIO_Init(void)
     GPIOInit_PA13_Struct.GPIO_Mode = GPIO_Mode_OUT_PP;
     GPIOInit_PA13_Struct.GPIO_DriveLevel = 0;
     GPIO_Init(GPIOA,&GPIOInit_PA13_Struct);/*TK7端口初始化*/
+	/*GPIOInit_PA06 Struct*/GPIO_InitTypeDef GPIOInit_PA06_Struct;
+	GPIOInit_PA06_Struct.GPIO_Pin = GPIO_Pin_6;
+	GPIOInit_PA06_Struct.GPIO_Mode = GPIO_Mode_OUT_PP;
+	GPIOInit_PA06_Struct.GPIO_DriveLevel = 0;
+	GPIO_Init(GPIOA,&GPIOInit_PA06_Struct);/*PA.06端口初始化*/
+	/*GPIOInit_PA07 Struct*/GPIO_InitTypeDef GPIOInit_PA07_Struct;
+	GPIOInit_PA07_Struct.GPIO_Pin = GPIO_Pin_7;
+	GPIOInit_PA07_Struct.GPIO_Mode = GPIO_Mode_OUT_PP;
+	GPIOInit_PA07_Struct.GPIO_DriveLevel = 0;
+	GPIO_Init(GPIOA,&GPIOInit_PA07_Struct);/*PA.07端口初始化*/
+	/*GPIOInit_PA08 Struct*/GPIO_InitTypeDef GPIOInit_PA08_Struct;
+	GPIOInit_PA08_Struct.GPIO_Pin = GPIO_Pin_8;
+	GPIOInit_PA08_Struct.GPIO_Mode = GPIO_Mode_OUT_PP;
+	GPIOInit_PA08_Struct.GPIO_DriveLevel = 0;
+	GPIO_Init(GPIOA,&GPIOInit_PA08_Struct);/*PA.08端口初始化*/
+	/*GPIOInit_PA09 Struct*/GPIO_InitTypeDef GPIOInit_PA09_Struct;
+	GPIOInit_PA09_Struct.GPIO_Pin = GPIO_Pin_9;
+	GPIOInit_PA09_Struct.GPIO_Mode = GPIO_Mode_OUT_PP;
+	GPIOInit_PA09_Struct.GPIO_DriveLevel = 0;
+	GPIO_Init(GPIOA,&GPIOInit_PA09_Struct);/*PA.09端口初始化*/
+	/*GPIOInit_PB02 Struct*/GPIO_InitTypeDef GPIOInit_PB02_Struct;
+	GPIOInit_PB02_Struct.GPIO_Pin = GPIO_Pin_2;
+	GPIOInit_PB02_Struct.GPIO_Mode = GPIO_Mode_OUT_PP;
+	GPIOInit_PB02_Struct.GPIO_DriveLevel = 0;
+	GPIO_Init(GPIOB,&GPIOInit_PB02_Struct);/*PB.02端口初始化*/
+	/*GPIOInit_PB03 Struct*/GPIO_InitTypeDef GPIOInit_PB03_Struct;
+	GPIOInit_PB03_Struct.GPIO_Pin = GPIO_Pin_3;
+	GPIOInit_PB03_Struct.GPIO_Mode = GPIO_Mode_OUT_PP;
+	GPIOInit_PB03_Struct.GPIO_DriveLevel = 0;
+	GPIO_Init(GPIOB,&GPIOInit_PB03_Struct);/*PB.03端口初始化*/
+	/*GPIOInit_PB04 Struct*/GPIO_InitTypeDef GPIOInit_PB04_Struct;
+	GPIOInit_PB04_Struct.GPIO_Pin = GPIO_Pin_4;
+	GPIOInit_PB04_Struct.GPIO_Mode = GPIO_Mode_OUT_PP;
+	GPIOInit_PB04_Struct.GPIO_DriveLevel = 0;
+	GPIO_Init(GPIOB,&GPIOInit_PB04_Struct);/*PB.04端口初始化*/
+	/*GPIOInit_PB05 Struct*/GPIO_InitTypeDef GPIOInit_PB05_Struct;
+	GPIOInit_PB05_Struct.GPIO_Pin = GPIO_Pin_5;
+	GPIOInit_PB05_Struct.GPIO_Mode = GPIO_Mode_OUT_PP;
+	GPIOInit_PB05_Struct.GPIO_DriveLevel = 0;
+	GPIO_Init(GPIOB,&GPIOInit_PB05_Struct);/*PB.05端口初始化*/
+	/*GPIOInit_PB06 Struct*/GPIO_InitTypeDef GPIOInit_PB06_Struct;
+	GPIOInit_PB06_Struct.GPIO_Pin = GPIO_Pin_6;
+	GPIOInit_PB06_Struct.GPIO_Mode = GPIO_Mode_OUT_PP;
+	GPIOInit_PB06_Struct.GPIO_DriveLevel = 0;
+	GPIO_Init(GPIOB,&GPIOInit_PB06_Struct);/*PB.06端口初始化*/
+	/*GPIOInit_PB07 Struct*/GPIO_InitTypeDef GPIOInit_PB07_Struct;
+	GPIOInit_PB07_Struct.GPIO_Pin = GPIO_Pin_7;
+	GPIOInit_PB07_Struct.GPIO_Mode = GPIO_Mode_OUT_PP;
+	GPIOInit_PB07_Struct.GPIO_DriveLevel = 0;
+	GPIO_Init(GPIOB,&GPIOInit_PB07_Struct);/*PB.07端口初始化*/
+	/*GPIOInit_PB08 Struct*/GPIO_InitTypeDef GPIOInit_PB08_Struct;
+	GPIOInit_PB08_Struct.GPIO_Pin = GPIO_Pin_8;
+	GPIOInit_PB08_Struct.GPIO_Mode = GPIO_Mode_OUT_PP;
+	GPIOInit_PB08_Struct.GPIO_DriveLevel = 0;
+	GPIO_Init(GPIOB,&GPIOInit_PB08_Struct);/*PB.08端口初始化*/
+	/*GPIOInit_PB09 Struct*/GPIO_InitTypeDef GPIOInit_PB09_Struct;
+	GPIOInit_PB09_Struct.GPIO_Pin = GPIO_Pin_9;
+	GPIOInit_PB09_Struct.GPIO_Mode = GPIO_Mode_OUT_PP;
+	GPIOInit_PB09_Struct.GPIO_DriveLevel = 0;
+	GPIO_Init(GPIOB,&GPIOInit_PB09_Struct);/*PB.09端口初始化*/
 	/*GPIOInit_PB10 Struct*/GPIO_InitTypeDef GPIOInit_PB10_Struct;
 	GPIOInit_PB10_Struct.GPIO_Pin = GPIO_Pin_10;
 	GPIOInit_PB10_Struct.GPIO_Mode = GPIO_Mode_OUT_PP;

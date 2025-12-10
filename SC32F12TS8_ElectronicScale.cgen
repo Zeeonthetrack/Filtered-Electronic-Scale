@@ -3,8 +3,8 @@ Project.Name=SC32F12TS8_ElectronicScale
 Project.Path=D:\Desktop\SC32F12TS8_TK
 Project.KeilPath=D:\Desktop\SC32F12TS8_TK\Keil_C\
 Project.CurrentPath=D:\Desktop\SC32F12TS8_TK\SC32F12TS8_ElectronicScale.cgen
-Project.CreationTime=20251210113456
-Project.ModificationTime=20251210113456
+Project.CreationTime=20251210114630
+Project.ModificationTime=20251210114630
 Project.Version=EasyCodeCube 3.6.0
 Project.IsBootloaderProject=false
 Project.ProjectMode=DEFAULT
@@ -59,10 +59,22 @@ Style=DockRight
 [PinNumber]16[/PinNumber][UpperIndex]1[/UpperIndex][Iindex]0[/Iindex][PinName]OP_P0[/PinName]
 [PinNumber]17[/PinNumber][UpperIndex]1[/UpperIndex][Iindex]0[/Iindex][PinName]OP_N[/PinName]
 [PinNumber]18[/PinNumber][UpperIndex]1[/UpperIndex][Iindex]0[/Iindex][PinName]OP_O[/PinName]
+[PinNumber]19[/PinNumber][UpperIndex]0[/UpperIndex][Iindex]2[/Iindex][PinName]PA.06[/PinName]
+[PinNumber]20[/PinNumber][UpperIndex]0[/UpperIndex][Iindex]2[/Iindex][PinName]PA.07[/PinName]
+[PinNumber]21[/PinNumber][UpperIndex]0[/UpperIndex][Iindex]2[/Iindex][PinName]PA.08[/PinName]
+[PinNumber]22[/PinNumber][UpperIndex]0[/UpperIndex][Iindex]2[/Iindex][PinName]PA.09[/PinName]
 [PinNumber]23[/PinNumber][UpperIndex]1[/UpperIndex][Iindex]0[/Iindex][PinName]TK4[/PinName]
 [PinNumber]24[/PinNumber][UpperIndex]1[/UpperIndex][Iindex]0[/Iindex][PinName]TK5[/PinName]
 [PinNumber]25[/PinNumber][UpperIndex]1[/UpperIndex][Iindex]0[/Iindex][PinName]TK6[/PinName]
 [PinNumber]26[/PinNumber][UpperIndex]1[/UpperIndex][Iindex]0[/Iindex][PinName]TK7[/PinName]
+[PinNumber]31[/PinNumber][UpperIndex]0[/UpperIndex][Iindex]2[/Iindex][PinName]PB.02[/PinName]
+[PinNumber]32[/PinNumber][UpperIndex]0[/UpperIndex][Iindex]2[/Iindex][PinName]PB.03[/PinName]
+[PinNumber]33[/PinNumber][UpperIndex]0[/UpperIndex][Iindex]2[/Iindex][PinName]PB.04[/PinName]
+[PinNumber]34[/PinNumber][UpperIndex]0[/UpperIndex][Iindex]2[/Iindex][PinName]PB.05[/PinName]
+[PinNumber]35[/PinNumber][UpperIndex]0[/UpperIndex][Iindex]2[/Iindex][PinName]PB.06[/PinName]
+[PinNumber]36[/PinNumber][UpperIndex]0[/UpperIndex][Iindex]2[/Iindex][PinName]PB.07[/PinName]
+[PinNumber]37[/PinNumber][UpperIndex]0[/UpperIndex][Iindex]2[/Iindex][PinName]PB.08[/PinName]
+[PinNumber]38[/PinNumber][UpperIndex]0[/UpperIndex][Iindex]2[/Iindex][PinName]PB.09[/PinName]
 [PinNumber]39[/PinNumber][UpperIndex]0[/UpperIndex][Iindex]2[/Iindex][PinName]PB.10[/PinName]
 [PinNumber]42[/PinNumber][UpperIndex]0[/UpperIndex][Iindex]2[/Iindex][PinName]PB.13[/PinName]
 [PinNumber]43[/PinNumber][UpperIndex]0[/UpperIndex][Iindex]2[/Iindex][PinName]PB.14[/PinName]
