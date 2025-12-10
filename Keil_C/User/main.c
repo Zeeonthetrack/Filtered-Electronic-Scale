@@ -346,8 +346,15 @@ int main(void)
         }
         
         // 持续调用显示函数进行动态扫描
-        displayNumberOnTube(display_value-pi_value);
 		
+		if(display_value>pi_value)
+		{
+			displayNumberOnTube((display_value-pi_value)*4/9);
+		}
+		else
+		{
+			displayNumberOnTube(0);
+		}
 		
 		WDT->WDT_CON |= WDT_CON_CLRWDT;  //清watchdog
 		if(TK_TouchKeyStatus&0x80)
