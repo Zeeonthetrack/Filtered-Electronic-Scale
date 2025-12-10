@@ -1,0 +1,24 @@
+# Keil build folders
+Objects/
+Listings/
+Output/
+build/
+
+# Keil generated files
+*.axf
+*.htm
+*.o
+*.d
+*.crf
+*.map
+*.lnp
+*.lst
+*.sct
+*.dep
+*.iex
+
+# Backup & temp
+*.bak
+*.tmp
+*.lk
+*.uvgui.*
