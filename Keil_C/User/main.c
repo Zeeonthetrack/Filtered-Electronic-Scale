@@ -170,7 +170,7 @@ int main(void)
 {
     IcResourceInit();
     TK_Init();
-    
+    int sum=0,xiuzheng=0;
     uint16_t first_adc = read_adc();                    // 先读一次作为初始值
     Kalman_Init(&kf_weight, (float)first_adc, 0.01f, 1000.0f);  // 强滤波，空秤稳
 
@@ -196,12 +196,12 @@ int main(void)
         if(current_float < 0.0f) current_float = 0.0f;
 
         // 四舍五入到最近的整数（显示精确、自然跳变）
-        uint32_t show_value = (uint32_t)(current_float + 0.5f + 25.0f);  // +0.5实现四舍五入
+        uint32_t show_value = (uint32_t)(current_float + 0.5f);  // +0.5实现四舍五入
 
         // 先不除10！保持大值，等稳定了你再改这里加 /10 或其他系数
         // uint32_t show_value_gram = show_value / 10;  // 示例：后期打开这行调克数
 
-        displayNumberOnTube(show_value);
+        displayNumberOnTube(show_value+xiuzheng);
 
         WDT->WDT_CON |= WDT_CON_CLRWDT; //清watchdog
 
@@ -215,11 +215,15 @@ int main(void)
                 ChangeTouchKeyvalue();
                 if(exKeyValue==1)
                 {
+					sum++;
+					if(sum==1) xiuzheng=25;
+					else xiuzheng=0;
                     pi_value_float = kalman_filtered;  // 去皮用当前滤波浮点值（更准）
                     PB_OT(10);
                 }
                 if(exKeyValue==2)
                 {
+					sum=0;
                     pi_value_float = 0.0f;
                     PB_OT(13);
                 }
