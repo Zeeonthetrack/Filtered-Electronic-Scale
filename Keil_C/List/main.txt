@@ -5,11 +5,11 @@
                           AREA ||i.ChangeTouchKeyvalue||, CODE, READONLY, ALIGN=2
 
                   ChangeTouchKeyvalue PROC
-;;;443      */
-;;;444    void ChangeTouchKeyvalue(void)
+;;;282      */
+;;;283    void ChangeTouchKeyvalue(void)
 000000  4810              LDR      r0,|L1.68|
-;;;445    {
-;;;446        switch(stableKeyValue)   // 使用消抖后的稳定值
+;;;284    {
+;;;285        switch(stableKeyValue)
 000002  6800              LDR      r0,[r0,#0]  ; stableKeyValue
 000004  2810              CMP      r0,#0x10
 000006  d006              BEQ      |L1.22|
@@ -21,56 +21,51 @@
 000012  d110              BNE      |L1.54|
 000014  e00b              B        |L1.46|
                   |L1.22|
-;;;447        {        
-;;;448            case 0x00000010:
-;;;449                exKeyValue = 1;
+;;;286        {
+;;;287            case 0x00000010:
+;;;288                exKeyValue = 1;
 000016  2001              MOVS     r0,#1
 000018  490b              LDR      r1,|L1.72|
 00001a  7008              STRB     r0,[r1,#0]
-;;;450                break;    
+;;;289                break;
 00001c  e00f              B        |L1.62|
                   |L1.30|
-;;;451                
-;;;452            case 0x00000020:
-;;;453                exKeyValue = 2;
+;;;290            case 0x00000020:
+;;;291                exKeyValue = 2;
 00001e  2002              MOVS     r0,#2
 000020  4909              LDR      r1,|L1.72|
 000022  7008              STRB     r0,[r1,#0]
-;;;454                break; 
+;;;292                break;
 000024  e00b              B        |L1.62|
                   |L1.38|
-;;;455                
-;;;456            case 0x00000040:
-;;;457                exKeyValue = 3;
+;;;293            case 0x00000040:
+;;;294                exKeyValue = 3;
 000026  2003              MOVS     r0,#3
 000028  4907              LDR      r1,|L1.72|
 00002a  7008              STRB     r0,[r1,#0]
-;;;458                break;
+;;;295                break;
 00002c  e007              B        |L1.62|
                   |L1.46|
-;;;459                
-;;;460            case 0x00000080:
-;;;461                exKeyValue = 4;
+;;;296            case 0x00000080:
+;;;297                exKeyValue = 4;
 00002e  2004              MOVS     r0,#4
 000030  4905              LDR      r1,|L1.72|
 000032  7008              STRB     r0,[r1,#0]
-;;;462                break;    
+;;;298                break;
 000034  e003              B        |L1.62|
                   |L1.54|
-;;;463                
-;;;464            default:
-;;;465                exKeyValue = 0xff;
+;;;299            default:
+;;;300                exKeyValue = 0xff;
 000036  20ff              MOVS     r0,#0xff
 000038  4903              LDR      r1,|L1.72|
 00003a  7008              STRB     r0,[r1,#0]
-;;;466                break;             
+;;;301                break;
 00003c  bf00              NOP      
                   |L1.62|
-00003e  bf00              NOP                            ;450
-;;;467        }
-;;;468    }
+00003e  bf00              NOP                            ;289
+;;;302        }
+;;;303    }
 000040  4770              BX       lr
-;;;469    
                           ENDP
 
 000042  0000              DCW      0x0000
@@ -82,92 +77,87 @@
                           AREA ||i.DebounceTouchKey||, CODE, READONLY, ALIGN=2
 
                   DebounceTouchKey PROC
-;;;405      */
-;;;406    void DebounceTouchKey(void)
+;;;250      */
+;;;251    void DebounceTouchKey(void)
 000000  4817              LDR      r0,|L2.96|
-;;;407    {
-;;;408        // 如果当前按键值与上次相同
-;;;409        if(TK_exKeyValueFlag == lastKeyValue)
+;;;252    {
+;;;253        if(TK_exKeyValueFlag == lastKeyValue)
 000002  6800              LDR      r0,[r0,#0]  ; TK_exKeyValueFlag
 000004  4917              LDR      r1,|L2.100|
 000006  6809              LDR      r1,[r1,#0]  ; lastKeyValue
 000008  4288              CMP      r0,r1
 00000a  d119              BNE      |L2.64|
-;;;410        {
-;;;411            debounceCount++;
+;;;254        {
+;;;255            debounceCount++;
 00000c  4816              LDR      r0,|L2.104|
 00000e  7800              LDRB     r0,[r0,#0]  ; debounceCount
 000010  1c40              ADDS     r0,r0,#1
 000012  4915              LDR      r1,|L2.104|
 000014  7008              STRB     r0,[r1,#0]
-;;;412            
-;;;413            // 连续5次检测到相同按键值，确认为有效按键
-;;;414            if(debounceCount >= 5)
+;;;256            if(debounceCount >= 5)
 000016  4608              MOV      r0,r1
 000018  7800              LDRB     r0,[r0,#0]  ; debounceCount
 00001a  2805              CMP      r0,#5
 00001c  db17              BLT      |L2.78|
-;;;415            {
-;;;416                if(stableKeyValue != TK_exKeyValueFlag)
+;;;257            {
+;;;258                if(stableKeyValue != TK_exKeyValueFlag)
 00001e  4813              LDR      r0,|L2.108|
 000020  6800              LDR      r0,[r0,#0]  ; stableKeyValue
 000022  490f              LDR      r1,|L2.96|
 000024  6809              LDR      r1,[r1,#0]  ; TK_exKeyValueFlag
 000026  4288              CMP      r0,r1
 000028  d006              BEQ      |L2.56|
-;;;417                {
-;;;418                    stableKeyValue = TK_exKeyValueFlag;
+;;;259                {
+;;;260                    stableKeyValue = TK_exKeyValueFlag;
 00002a  480d              LDR      r0,|L2.96|
 00002c  6800              LDR      r0,[r0,#0]  ; TK_exKeyValueFlag
 00002e  490f              LDR      r1,|L2.108|
 000030  6008              STR      r0,[r1,#0]  ; stableKeyValue
-;;;419                    keyPressed = 1;  // 设置按键按下标志
+;;;261                    keyPressed = 1;
 000032  2001              MOVS     r0,#1
 000034  490e              LDR      r1,|L2.112|
 000036  7008              STRB     r0,[r1,#0]
                   |L2.56|
-;;;420                }
-;;;421                debounceCount = 5;   // 防止计数器溢出
+;;;262                }
+;;;263                debounceCount = 5;
 000038  2005              MOVS     r0,#5
 00003a  490b              LDR      r1,|L2.104|
 00003c  7008              STRB     r0,[r1,#0]
 00003e  e006              B        |L2.78|
                   |L2.64|
-;;;422            }
-;;;423        }
-;;;424        else
-;;;425        {
-;;;426            // 按键值变化，重置计数器
-;;;427            debounceCount = 0;
+;;;264            }
+;;;265        }
+;;;266        else
+;;;267        {
+;;;268            debounceCount = 0;
 000040  2000              MOVS     r0,#0
 000042  4909              LDR      r1,|L2.104|
 000044  7008              STRB     r0,[r1,#0]
-;;;428            lastKeyValue = TK_exKeyValueFlag;
+;;;269            lastKeyValue = TK_exKeyValueFlag;
 000046  4806              LDR      r0,|L2.96|
 000048  6800              LDR      r0,[r0,#0]  ; TK_exKeyValueFlag
 00004a  4906              LDR      r1,|L2.100|
 00004c  6008              STR      r0,[r1,#0]  ; lastKeyValue
                   |L2.78|
-;;;429        }
-;;;430        
-;;;431        // 无按键时的处理（按键值为0）
-;;;432        if(TK_exKeyValueFlag == 0)
+;;;270        }
+;;;271       
+;;;272        if(TK_exKeyValueFlag == 0)
 00004e  4804              LDR      r0,|L2.96|
 000050  6800              LDR      r0,[r0,#0]  ; TK_exKeyValueFlag
 000052  2800              CMP      r0,#0
 000054  d103              BNE      |L2.94|
-;;;433        {
-;;;434            debounceCount = 0;
+;;;273        {
+;;;274            debounceCount = 0;
 000056  4904              LDR      r1,|L2.104|
 000058  7008              STRB     r0,[r1,#0]
-;;;435            stableKeyValue = 0;
+;;;275            stableKeyValue = 0;
 00005a  4904              LDR      r1,|L2.108|
 00005c  6008              STR      r0,[r1,#0]  ; stableKeyValue
                   |L2.94|
-;;;436        }
-;;;437    }
+;;;276        }
+;;;277    }
 00005e  4770              BX       lr
-;;;438    
+;;;278    /**
                           ENDP
 
                   |L2.96|
@@ -181,1043 +171,577 @@
                   |L2.112|
                           DCD      keyPressed
 
-                          AREA ||i.Sys_Scan||, CODE, READONLY, ALIGN=2
+                          AREA ||i.Kalman_Init||, CODE, READONLY, ALIGN=1
 
-                  Sys_Scan PROC
-;;;469    
-;;;470    void Sys_Scan(void)
+                  Kalman_Init PROC
+;;;147    // 初始化卡尔曼滤波器（建议在 main() 开头调用一次）
+;;;148    void Kalman_Init(KalmanFilter *kf, float init_value, float q, float r) {
 000000  b510              PUSH     {r4,lr}
-;;;471    {	
-;;;472        if(TK_TouchKeyStatus&0x80)	    //重要步骤2:  触摸键扫描一轮标志，是否调用TouchKeyScan()一定要根据此标志位置起后
-000002  480f              LDR      r0,|L3.64|
-000004  7800              LDRB     r0,[r0,#0]  ; TK_TouchKeyStatus
-000006  2180              MOVS     r1,#0x80
-000008  4008              ANDS     r0,r0,r1
-00000a  2800              CMP      r0,#0
-00000c  d016              BEQ      |L3.60|
-;;;473        {	   																	
-;;;474            TK_TouchKeyStatus &= 0x7f;	//重要步骤3: 清除标志位， 需要外部清除。													    
-00000e  480c              LDR      r0,|L3.64|
-000010  7800              LDRB     r0,[r0,#0]  ; TK_TouchKeyStatus
-000012  0640              LSLS     r0,r0,#25
-000014  0e40              LSRS     r0,r0,#25
-000016  490a              LDR      r1,|L3.64|
-000018  7008              STRB     r0,[r1,#0]
-;;;475            TK_exKeyValueFlag = TK_TouchKeyScan();//按键数据处理函数 
-00001a  f7fffffe          BL       TK_TouchKeyScan
-00001e  4909              LDR      r1,|L3.68|
-000020  6008              STR      r0,[r1,#0]  ; TK_exKeyValueFlag
-;;;476            
-;;;477            DebounceTouchKey();          // 消抖处理
-000022  f7fffffe          BL       DebounceTouchKey
-;;;478            if(keyPressed) {
-000026  4808              LDR      r0,|L3.72|
-000028  7800              LDRB     r0,[r0,#0]  ; keyPressed
-00002a  2800              CMP      r0,#0
-00002c  d004              BEQ      |L3.56|
-;;;479                ChangeTouchKeyvalue();
-00002e  f7fffffe          BL       ChangeTouchKeyvalue
-;;;480                keyPressed = 0;
-000032  2000              MOVS     r0,#0
-000034  4904              LDR      r1,|L3.72|
-000036  7008              STRB     r0,[r1,#0]
-                  |L3.56|
-;;;481            }
-;;;482            
-;;;483            TK_Restart();				//启动下一轮转换																														 			
-000038  f7fffffe          BL       TK_Restart
-                  |L3.60|
-;;;484        }
-;;;485    }
-00003c  bd10              POP      {r4,pc}
+;;;149        kf->x = init_value;   // 初始估计值
+000002  6001              STR      r1,[r0,#0]
+;;;150        kf->p = 1.0f;         // 初始误差协方差
+000004  247f              MOVS     r4,#0x7f
+000006  05e4              LSLS     r4,r4,#23
+000008  6044              STR      r4,[r0,#4]
+;;;151        kf->q = q;            // 过程噪声
+00000a  6082              STR      r2,[r0,#8]
+;;;152        kf->r = r;            // 测量噪声
+00000c  60c3              STR      r3,[r0,#0xc]
+;;;153    }
+00000e  bd10              POP      {r4,pc}
+;;;154    
                           ENDP
 
-00003e  0000              DCW      0x0000
-                  |L3.64|
-                          DCD      TK_TouchKeyStatus
-                  |L3.68|
-                          DCD      TK_exKeyValueFlag
-                  |L3.72|
-                          DCD      keyPressed
+
+                          AREA ||i.Kalman_Update||, CODE, READONLY, ALIGN=1
+
+                  Kalman_Update PROC
+;;;155    // 卡尔曼滤波核心函数（每次新采样后调用）
+;;;156    float Kalman_Update(KalmanFilter *kf, float measurement) {
+000000  b5f8              PUSH     {r3-r7,lr}
+000002  4604              MOV      r4,r0
+000004  460d              MOV      r5,r1
+;;;157        // 预测步骤
+;;;158        kf->p = kf->p + kf->q;
+000006  68a1              LDR      r1,[r4,#8]
+000008  6860              LDR      r0,[r4,#4]
+00000a  f7fffffe          BL       __aeabi_fadd
+00000e  6060              STR      r0,[r4,#4]
+;;;159    
+;;;160        // 更新步骤
+;;;161        kf->kg = kf->p / (kf->p + kf->r);
+000010  68e1              LDR      r1,[r4,#0xc]
+000012  6860              LDR      r0,[r4,#4]
+000014  f7fffffe          BL       __aeabi_fadd
+000018  4606              MOV      r6,r0
+00001a  4631              MOV      r1,r6
+00001c  6860              LDR      r0,[r4,#4]
+00001e  f7fffffe          BL       __aeabi_fdiv
+000022  6120              STR      r0,[r4,#0x10]
+;;;162        kf->x  = kf->x + kf->kg * (measurement - kf->x);
+000024  4628              MOV      r0,r5
+000026  6821              LDR      r1,[r4,#0]
+000028  f7fffffe          BL       __aeabi_fsub
+00002c  4607              MOV      r7,r0
+00002e  6921              LDR      r1,[r4,#0x10]
+000030  f7fffffe          BL       __aeabi_fmul
+000034  4606              MOV      r6,r0
+000036  6821              LDR      r1,[r4,#0]
+000038  f7fffffe          BL       __aeabi_fadd
+00003c  6020              STR      r0,[r4,#0]
+;;;163        kf->p  = (1.0f - kf->kg) * kf->p;
+00003e  207f              MOVS     r0,#0x7f
+000040  05c0              LSLS     r0,r0,#23
+000042  6921              LDR      r1,[r4,#0x10]
+000044  f7fffffe          BL       __aeabi_fsub
+000048  4606              MOV      r6,r0
+00004a  6861              LDR      r1,[r4,#4]
+00004c  f7fffffe          BL       __aeabi_fmul
+000050  6060              STR      r0,[r4,#4]
+;;;164    
+;;;165        return kf->x;  // 返回当前最优估计值
+000052  6820              LDR      r0,[r4,#0]
+;;;166    }
+000054  bdf8              POP      {r3-r7,pc}
+;;;167    // ========================================================
+                          ENDP
+
 
                           AREA ||i.decomposeNumber||, CODE, READONLY, ALIGN=2
 
                   decomposeNumber PROC
-;;;61       */
-;;;62     void decomposeNumber(unsigned int num)
+;;;53       */
+;;;54     void decomposeNumber(unsigned int num)
 000000  b570              PUSH     {r4-r6,lr}
-;;;63     {
+;;;55     {
 000002  4604              MOV      r4,r0
-;;;64         digits[0] = num % 10;            // 千位
+;;;56         digits[0] = num % 10; // 个位
 000004  210a              MOVS     r1,#0xa
 000006  4620              MOV      r0,r4
 000008  f7fffffe          BL       __aeabi_uidivmod
-00000c  4810              LDR      r0,|L4.80|
+00000c  4810              LDR      r0,|L5.80|
 00000e  7001              STRB     r1,[r0,#0]
-;;;65         digits[1] = (num % 100) / 10; // 百位
-000010  2164              MOVS     r1,#0x64
+;;;57         digits[1] = (num / 10) % 10; // 十位
+000010  210a              MOVS     r1,#0xa
 000012  4620              MOV      r0,r4
 000014  f7fffffe          BL       __aeabi_uidivmod
-000018  460d              MOV      r5,r1
+000018  4605              MOV      r5,r0
 00001a  210a              MOVS     r1,#0xa
-00001c  4628              MOV      r0,r5
-00001e  f7fffffe          BL       __aeabi_uidivmod
-000022  490b              LDR      r1,|L4.80|
-000024  7048              STRB     r0,[r1,#1]
-;;;66         digits[2] = (num % 1000) / 100;     // 十位
-000026  217d              MOVS     r1,#0x7d
-000028  00c9              LSLS     r1,r1,#3
-00002a  4620              MOV      r0,r4
-00002c  f7fffffe          BL       __aeabi_uidivmod
-000030  460d              MOV      r5,r1
-000032  2164              MOVS     r1,#0x64
-000034  4628              MOV      r0,r5
-000036  f7fffffe          BL       __aeabi_uidivmod
-00003a  4905              LDR      r1,|L4.80|
-00003c  7088              STRB     r0,[r1,#2]
-;;;67         digits[3] =  num / 1000;         // 个位
-00003e  217d              MOVS     r1,#0x7d
-000040  00c9              LSLS     r1,r1,#3
-000042  4620              MOV      r0,r4
-000044  f7fffffe          BL       __aeabi_uidivmod
-000048  4901              LDR      r1,|L4.80|
-00004a  70c8              STRB     r0,[r1,#3]
-;;;68     }
-00004c  bd70              POP      {r4-r6,pc}
-;;;69     
+00001c  f7fffffe          BL       __aeabi_uidivmod
+000020  480b              LDR      r0,|L5.80|
+000022  7041              STRB     r1,[r0,#1]
+;;;58         digits[2] = (num / 100) % 10; // 百位
+000024  2164              MOVS     r1,#0x64
+000026  4620              MOV      r0,r4
+000028  f7fffffe          BL       __aeabi_uidivmod
+00002c  4605              MOV      r5,r0
+00002e  210a              MOVS     r1,#0xa
+000030  f7fffffe          BL       __aeabi_uidivmod
+000034  4806              LDR      r0,|L5.80|
+000036  7081              STRB     r1,[r0,#2]
+;;;59         digits[3] = (num / 1000) % 10; // 千位
+000038  217d              MOVS     r1,#0x7d
+00003a  00c9              LSLS     r1,r1,#3
+00003c  4620              MOV      r0,r4
+00003e  f7fffffe          BL       __aeabi_uidivmod
+000042  4605              MOV      r5,r0
+000044  210a              MOVS     r1,#0xa
+000046  f7fffffe          BL       __aeabi_uidivmod
+00004a  4801              LDR      r0,|L5.80|
+00004c  70c1              STRB     r1,[r0,#3]
+;;;60     }
+00004e  bd70              POP      {r4-r6,pc}
+;;;61     /**
                           ENDP
 
-00004e  0000              DCW      0x0000
-                  |L4.80|
+                  |L5.80|
                           DCD      digits
 
                           AREA ||i.displayDigit||, CODE, READONLY, ALIGN=2
 
                   displayDigit PROC
-;;;74       */
-;;;75     void displayDigit(unsigned char digit, unsigned char position)
+;;;65       */
+;;;66     void displayDigit(unsigned char digit, unsigned char position)
 000000  b510              PUSH     {r4,lr}
-;;;76     {
+;;;67     {
 000002  4602              MOV      r2,r0
-;;;77         if (digit > 9) return; // 数字范围检查
+;;;68         if (digit > 9) return; // 数字范围检查
 000004  2a09              CMP      r2,#9
-000006  dd00              BLE      |L5.10|
-                  |L5.8|
-;;;78         
-;;;79         // 设置位选
-;;;80     	
-;;;81     	PA_BIT(6) = (digitSelect[position] >> 4) & 0x01;
-;;;82         PA_BIT(7) = (digitSelect[position] >> 5) & 0x01;
-;;;83         PA_BIT(8) = (digitSelect[position] >> 6) & 0x01;
-;;;84         PA_BIT(9) = (digitSelect[position] >> 7) & 0x01;
-;;;85         
-;;;86         // 设置段选
-;;;87         unsigned char seg = digitSegments[digit];
-;;;88         PB_BIT(2) = (seg >> 0) & 0x01;  // a
-;;;89         PB_BIT(3) = (seg >> 1) & 0x01;  // f
-;;;90         PB_BIT(4) = (seg >> 2) & 0x01;  // b
-;;;91         PB_BIT(5) = (seg >> 3) & 0x01;  // g
-;;;92         PB_BIT(6) = (seg >> 4) & 0x01;  // c
-;;;93         PB_BIT(7) = (seg >> 5) & 0x01;  // dp
-;;;94         PB_BIT(8) = (seg >> 6) & 0x01;  // d
-;;;95         PB_BIT(9) = (seg >> 7) & 0x01;  // e
-;;;96     }
+000006  dd00              BLE      |L6.10|
+                  |L6.8|
+;;;69        
+;;;70         // 设置位选
+;;;71         PA_BIT(6) = (digitSelect[position] >> 4) & 0x01;
+;;;72         PA_BIT(7) = (digitSelect[position] >> 5) & 0x01;
+;;;73         PA_BIT(8) = (digitSelect[position] >> 6) & 0x01;
+;;;74         PA_BIT(9) = (digitSelect[position] >> 7) & 0x01;
+;;;75        
+;;;76         // 设置段选
+;;;77         unsigned char seg = digitSegments[digit];
+;;;78         PB_BIT(2) = (seg >> 0) & 0x01; // a
+;;;79         PB_BIT(3) = (seg >> 1) & 0x01; // f
+;;;80         PB_BIT(4) = (seg >> 2) & 0x01; // b
+;;;81         PB_BIT(5) = (seg >> 3) & 0x01; // g
+;;;82         PB_BIT(6) = (seg >> 4) & 0x01; // c
+;;;83         PB_BIT(7) = (seg >> 5) & 0x01; // dp
+;;;84         PB_BIT(8) = (seg >> 6) & 0x01; // d
+;;;85         PB_BIT(9) = (seg >> 7) & 0x01; // e
+;;;86     }
 000008  bd10              POP      {r4,pc}
-                  |L5.10|
-00000a  4b18              LDR      r3,|L5.108|
-00000c  5c5b              LDRB     r3,[r3,r1]            ;81
-00000e  06db              LSLS     r3,r3,#27             ;81
-000010  0fdb              LSRS     r3,r3,#31             ;81
-000012  4c17              LDR      r4,|L5.112|
-000014  71a3              STRB     r3,[r4,#6]            ;81
-000016  4b15              LDR      r3,|L5.108|
-000018  5c5b              LDRB     r3,[r3,r1]            ;82
-00001a  069b              LSLS     r3,r3,#26             ;82
-00001c  0fdb              LSRS     r3,r3,#31             ;82
-00001e  71e3              STRB     r3,[r4,#7]            ;82
-000020  4b12              LDR      r3,|L5.108|
-000022  5c5b              LDRB     r3,[r3,r1]            ;83
-000024  065b              LSLS     r3,r3,#25             ;83
-000026  0fdb              LSRS     r3,r3,#31             ;83
-000028  7223              STRB     r3,[r4,#8]            ;83
-00002a  4b10              LDR      r3,|L5.108|
-00002c  5c5b              LDRB     r3,[r3,r1]            ;84
-00002e  11db              ASRS     r3,r3,#7              ;84
-000030  7263              STRB     r3,[r4,#9]            ;84
-000032  4b10              LDR      r3,|L5.116|
-000034  5c98              LDRB     r0,[r3,r2]            ;87
-000036  07c3              LSLS     r3,r0,#31             ;88
-000038  0fdb              LSRS     r3,r3,#31             ;88
-00003a  4c0f              LDR      r4,|L5.120|
-00003c  70a3              STRB     r3,[r4,#2]            ;88
-00003e  0783              LSLS     r3,r0,#30             ;89
-000040  0fdb              LSRS     r3,r3,#31             ;89
-000042  70e3              STRB     r3,[r4,#3]            ;89
-000044  0743              LSLS     r3,r0,#29             ;90
-000046  0fdb              LSRS     r3,r3,#31             ;90
-000048  7123              STRB     r3,[r4,#4]            ;90
-00004a  0703              LSLS     r3,r0,#28             ;91
-00004c  0fdb              LSRS     r3,r3,#31             ;91
-00004e  7163              STRB     r3,[r4,#5]            ;91
-000050  06c3              LSLS     r3,r0,#27             ;92
-000052  0fdb              LSRS     r3,r3,#31             ;92
-000054  71a3              STRB     r3,[r4,#6]            ;92
-000056  0683              LSLS     r3,r0,#26             ;93
-000058  0fdb              LSRS     r3,r3,#31             ;93
-00005a  71e3              STRB     r3,[r4,#7]            ;93
-00005c  0643              LSLS     r3,r0,#25             ;94
-00005e  0fdb              LSRS     r3,r3,#31             ;94
-000060  7223              STRB     r3,[r4,#8]            ;94
-000062  11c3              ASRS     r3,r0,#7              ;95
-000064  7263              STRB     r3,[r4,#9]            ;95
+                  |L6.10|
+00000a  4b18              LDR      r3,|L6.108|
+00000c  5c5b              LDRB     r3,[r3,r1]            ;71
+00000e  06db              LSLS     r3,r3,#27             ;71
+000010  0fdb              LSRS     r3,r3,#31             ;71
+000012  4c17              LDR      r4,|L6.112|
+000014  71a3              STRB     r3,[r4,#6]            ;71
+000016  4b15              LDR      r3,|L6.108|
+000018  5c5b              LDRB     r3,[r3,r1]            ;72
+00001a  069b              LSLS     r3,r3,#26             ;72
+00001c  0fdb              LSRS     r3,r3,#31             ;72
+00001e  71e3              STRB     r3,[r4,#7]            ;72
+000020  4b12              LDR      r3,|L6.108|
+000022  5c5b              LDRB     r3,[r3,r1]            ;73
+000024  065b              LSLS     r3,r3,#25             ;73
+000026  0fdb              LSRS     r3,r3,#31             ;73
+000028  7223              STRB     r3,[r4,#8]            ;73
+00002a  4b10              LDR      r3,|L6.108|
+00002c  5c5b              LDRB     r3,[r3,r1]            ;74
+00002e  11db              ASRS     r3,r3,#7              ;74
+000030  7263              STRB     r3,[r4,#9]            ;74
+000032  4b10              LDR      r3,|L6.116|
+000034  5c98              LDRB     r0,[r3,r2]            ;77
+000036  07c3              LSLS     r3,r0,#31             ;78
+000038  0fdb              LSRS     r3,r3,#31             ;78
+00003a  4c0f              LDR      r4,|L6.120|
+00003c  70a3              STRB     r3,[r4,#2]            ;78
+00003e  0783              LSLS     r3,r0,#30             ;79
+000040  0fdb              LSRS     r3,r3,#31             ;79
+000042  70e3              STRB     r3,[r4,#3]            ;79
+000044  0743              LSLS     r3,r0,#29             ;80
+000046  0fdb              LSRS     r3,r3,#31             ;80
+000048  7123              STRB     r3,[r4,#4]            ;80
+00004a  0703              LSLS     r3,r0,#28             ;81
+00004c  0fdb              LSRS     r3,r3,#31             ;81
+00004e  7163              STRB     r3,[r4,#5]            ;81
+000050  06c3              LSLS     r3,r0,#27             ;82
+000052  0fdb              LSRS     r3,r3,#31             ;82
+000054  71a3              STRB     r3,[r4,#6]            ;82
+000056  0683              LSLS     r3,r0,#26             ;83
+000058  0fdb              LSRS     r3,r3,#31             ;83
+00005a  71e3              STRB     r3,[r4,#7]            ;83
+00005c  0643              LSLS     r3,r0,#25             ;84
+00005e  0fdb              LSRS     r3,r3,#31             ;84
+000060  7223              STRB     r3,[r4,#8]            ;84
+000062  11c3              ASRS     r3,r0,#7              ;85
+000064  7263              STRB     r3,[r4,#9]            ;85
 000066  bf00              NOP      
-000068  e7ce              B        |L5.8|
-;;;97     
+000068  e7ce              B        |L6.8|
+;;;87     /**
                           ENDP
 
 00006a  0000              DCW      0x0000
-                  |L5.108|
+                  |L6.108|
                           DCD      digitSelect
-                  |L5.112|
+                  |L6.112|
                           DCD      0x40011000
-                  |L5.116|
+                  |L6.116|
                           DCD      digitSegments
-                  |L5.120|
+                  |L6.120|
                           DCD      0x40011100
 
                           AREA ||i.displayNumberOnTube||, CODE, READONLY, ALIGN=2
 
                   displayNumberOnTube PROC
-;;;101      */
-;;;102    void displayNumberOnTube(unsigned int num)
+;;;90       */
+;;;91     void displayNumberOnTube(unsigned int num)
 000000  b510              PUSH     {r4,lr}
-;;;103    {
+;;;92     {
 000002  4604              MOV      r4,r0
-;;;104        decomposeNumber(num);
+;;;93         decomposeNumber(num);
 000004  4620              MOV      r0,r4
 000006  f7fffffe          BL       decomposeNumber
-;;;105        
-;;;106        // 动态扫描显示4位数码管
-;;;107        static unsigned char currentPosition = 0;
-;;;108        
-;;;109        displayDigit(digits[currentPosition], currentPosition);
-00000a  490a              LDR      r1,|L6.52|
-00000c  4a0a              LDR      r2,|L6.56|
+;;;94        
+;;;95         // 动态扫描显示4位数码管
+;;;96         static unsigned char currentPosition = 0;
+;;;97        
+;;;98         displayDigit(digits[currentPosition], currentPosition);
+00000a  490a              LDR      r1,|L7.52|
+00000c  4a0a              LDR      r2,|L7.56|
 00000e  7812              LDRB     r2,[r2,#0]  ; currentPosition
 000010  5c88              LDRB     r0,[r1,r2]
-000012  4909              LDR      r1,|L6.56|
+000012  4909              LDR      r1,|L7.56|
 000014  7809              LDRB     r1,[r1,#0]  ; currentPosition
 000016  f7fffffe          BL       displayDigit
-;;;110        
-;;;111        currentPosition++;
-00001a  4807              LDR      r0,|L6.56|
+;;;99        
+;;;100        currentPosition++;
+00001a  4807              LDR      r0,|L7.56|
 00001c  7800              LDRB     r0,[r0,#0]  ; currentPosition
 00001e  1c40              ADDS     r0,r0,#1
-000020  4905              LDR      r1,|L6.56|
+000020  4905              LDR      r1,|L7.56|
 000022  7008              STRB     r0,[r1,#0]
-;;;112        if (currentPosition >= 4) {
+;;;101        if (currentPosition >= 4) {
 000024  4608              MOV      r0,r1
 000026  7800              LDRB     r0,[r0,#0]  ; currentPosition
 000028  2804              CMP      r0,#4
-00002a  db01              BLT      |L6.48|
-;;;113            currentPosition = 0;
+00002a  db01              BLT      |L7.48|
+;;;102            currentPosition = 0;
 00002c  2000              MOVS     r0,#0
 00002e  7008              STRB     r0,[r1,#0]
-                  |L6.48|
-;;;114        }
-;;;115    }
+                  |L7.48|
+;;;103        }
+;;;104    }
 000030  bd10              POP      {r4,pc}
-;;;116    
+;;;105    //@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
                           ENDP
 
 000032  0000              DCW      0x0000
-                  |L6.52|
+                  |L7.52|
                           DCD      digits
-                  |L6.56|
+                  |L7.56|
                           DCD      currentPosition
-
-                          AREA ||i.filter_init||, CODE, READONLY, ALIGN=1
-
-                  filter_init PROC
-;;;159    // 初始化滤波器
-;;;160    void filter_init(MovingAverageFilter *filter) {
-000000  b510              PUSH     {r4,lr}
-;;;161        for (int i = 0; i < WINDOW_SIZE; i++) 
-000002  2100              MOVS     r1,#0
-000004  e004              B        |L7.16|
-                  |L7.6|
-;;;162    	  {
-;;;163            filter->buffer[i] = 0;
-000006  2300              MOVS     r3,#0
-000008  004c              LSLS     r4,r1,#1
-00000a  1d02              ADDS     r2,r0,#4
-00000c  5313              STRH     r3,[r2,r4]
-00000e  1c49              ADDS     r1,r1,#1              ;161
-                  |L7.16|
-000010  2201              MOVS     r2,#1                 ;161
-000012  0292              LSLS     r2,r2,#10             ;161
-000014  4291              CMP      r1,r2                 ;161
-000016  dbf6              BLT      |L7.6|
-;;;164        }
-;;;165        filter->sum = 0;
-000018  2100              MOVS     r1,#0
-00001a  6001              STR      r1,[r0,#0]
-;;;166        filter->index = 0;
-00001c  0052              LSLS     r2,r2,#1
-00001e  1882              ADDS     r2,r0,r2
-000020  8091              STRH     r1,[r2,#4]
-;;;167        filter->is_window_filled = 0;
-000022  2201              MOVS     r2,#1
-000024  02d2              LSLS     r2,r2,#11
-000026  1882              ADDS     r2,r0,r2
-000028  7191              STRB     r1,[r2,#6]
-;;;168    }
-00002a  bd10              POP      {r4,pc}
-;;;169    //滑动窗口
-                          ENDP
-
-
-                          AREA ||i.filter_update||, CODE, READONLY, ALIGN=1
-
-                  filter_update PROC
-;;;169    //滑动窗口
-;;;170    uint32_t filter_update(MovingAverageFilter *filter, uint16_t new_sample) {
-000000  b530              PUSH     {r4,r5,lr}
-000002  4602              MOV      r2,r0
-;;;171    	  uint32_t adcDataOver;
-;;;172        // 1. 减去即将被覆盖的旧数据（如果窗口已填满）
-;;;173        if (filter->is_window_filled) {
-000004  2301              MOVS     r3,#1
-000006  02db              LSLS     r3,r3,#11
-000008  18d3              ADDS     r3,r2,r3
-00000a  799b              LDRB     r3,[r3,#6]
-00000c  2b00              CMP      r3,#0
-00000e  d009              BEQ      |L8.36|
-;;;174            filter->sum -= filter->buffer[filter->index];
-000010  2301              MOVS     r3,#1
-000012  02db              LSLS     r3,r3,#11
-000014  18d3              ADDS     r3,r2,r3
-000016  889b              LDRH     r3,[r3,#4]
-000018  005d              LSLS     r5,r3,#1
-00001a  1d13              ADDS     r3,r2,#4
-00001c  5b5b              LDRH     r3,[r3,r5]
-00001e  6814              LDR      r4,[r2,#0]
-000020  1ae3              SUBS     r3,r4,r3
-000022  6013              STR      r3,[r2,#0]
-                  |L8.36|
-;;;175        }
-;;;176    
-;;;177        // 2. 添加新数据到窗口
-;;;178        filter->buffer[filter->index] = new_sample;
-000024  2301              MOVS     r3,#1
-000026  02db              LSLS     r3,r3,#11
-000028  18d3              ADDS     r3,r2,r3
-00002a  889b              LDRH     r3,[r3,#4]
-00002c  005c              LSLS     r4,r3,#1
-00002e  1d13              ADDS     r3,r2,#4
-000030  5319              STRH     r1,[r3,r4]
-;;;179        filter->sum += new_sample;
-000032  6813              LDR      r3,[r2,#0]
-000034  185b              ADDS     r3,r3,r1
-000036  6013              STR      r3,[r2,#0]
-;;;180    
-;;;181        // 3. 更新索引和窗口状态
-;;;182        filter->index++;
-000038  2301              MOVS     r3,#1
-00003a  02db              LSLS     r3,r3,#11
-00003c  18d3              ADDS     r3,r2,r3
-00003e  889b              LDRH     r3,[r3,#4]
-000040  1c5b              ADDS     r3,r3,#1
-000042  2401              MOVS     r4,#1
-000044  02e4              LSLS     r4,r4,#11
-000046  1914              ADDS     r4,r2,r4
-000048  80a3              STRH     r3,[r4,#4]
-;;;183        if (filter->index >= WINDOW_SIZE) {
-00004a  2301              MOVS     r3,#1
-00004c  02db              LSLS     r3,r3,#11
-00004e  18d3              ADDS     r3,r2,r3
-000050  889b              LDRH     r3,[r3,#4]
-000052  2401              MOVS     r4,#1
-000054  02a4              LSLS     r4,r4,#10
-000056  42a3              CMP      r3,r4
-000058  db07              BLT      |L8.106|
-;;;184            filter->index = 0;
-00005a  2300              MOVS     r3,#0
-00005c  0064              LSLS     r4,r4,#1
-00005e  1914              ADDS     r4,r2,r4
-000060  80a3              STRH     r3,[r4,#4]
-;;;185            filter->is_window_filled = 1;
-000062  2301              MOVS     r3,#1
-000064  02dc              LSLS     r4,r3,#11
-000066  1914              ADDS     r4,r2,r4
-000068  71a3              STRB     r3,[r4,#6]
-                  |L8.106|
-;;;186        }
-;;;187    
-;;;188        // 4-1 计算当前过采样值 过采样5位
-;;;189    		if(filter->is_window_filled == 1)
-00006a  2301              MOVS     r3,#1
-00006c  02db              LSLS     r3,r3,#11
-00006e  18d3              ADDS     r3,r2,r3
-000070  799b              LDRB     r3,[r3,#6]
-000072  2b01              CMP      r3,#1
-000074  d102              BNE      |L8.124|
-;;;190    		{
-;;;191    			adcDataOver = filter->sum >> 5;
-000076  6813              LDR      r3,[r2,#0]
-000078  0958              LSRS     r0,r3,#5
-00007a  e000              B        |L8.126|
-                  |L8.124|
-;;;192    		}
-;;;193    	  else
-;;;194    		{
-;;;195    			adcDataOver = new_sample << 5;//第一个窗口按照源数据输出			
-00007c  0148              LSLS     r0,r1,#5
-                  |L8.126|
-;;;196    		}			
-;;;197        return adcDataOver;
-;;;198    		
-;;;199    //    // 4-2 计算当前均值（注意窗口未填满时除数不同）
-;;;200    //    uint16_t valid_samples = filter->is_window_filled ? WINDOW_SIZE : filter->index;
-;;;201    //    return (uint16_t)(filter->sum / valid_samples);
-;;;202    }
-00007e  bd30              POP      {r4,r5,pc}
-;;;203    MovingAverageFilter filter;
-                          ENDP
-
 
                           AREA ||i.main||, CODE, READONLY, ALIGN=2
 
                   main PROC
-;;;206    
-;;;207    int main(void)
-000000  b08c              SUB      sp,sp,#0x30
-;;;208    {
-;;;209    	
-;;;210        IcResourceInit();
+;;;168    
+;;;169    int main(void)
+000000  b50e              PUSH     {r1-r3,lr}
+;;;170    {
+;;;171        IcResourceInit();
 000002  f7fffffe          BL       IcResourceInit
-;;;211        TK_Init();
+;;;172        TK_Init();
 000006  f7fffffe          BL       TK_Init
-;;;212    	
-;;;213    	uint16_t raw_adc;
-;;;214        uint32_t filtered_adc;
-;;;215    	
-;;;216    	filter_init(&filter);
-00000a  48a5              LDR      r0,|L9.672|
-00000c  f7fffffe          BL       filter_init
-;;;217        OP_OffsetSet(OP);  
-000010  48a4              LDR      r0,|L9.676|
-000012  f7fffffe          BL       OP_OffsetSet
-;;;218    	
-;;;219    	PB_BIT(10)=0;
-000016  2000              MOVS     r0,#0
-000018  49a3              LDR      r1,|L9.680|
-00001a  7288              STRB     r0,[r1,#0xa]
-;;;220    	PB_BIT(13)=0;
-00001c  7348              STRB     r0,[r1,#0xd]
-;;;221    	PB_BIT(14)=0;
-00001e  7388              STRB     r0,[r1,#0xe]
-;;;222    	PB_BIT(15)=0;
-000020  73c8              STRB     r0,[r1,#0xf]
-;;;223        
-;;;224        // ====== 参数调整部分 ======
-;;;225        // 1. 增加中值滤波窗口大小
-;;;226        #define MEDIAN_FILTER_SIZE 7  // 从5增加到7，更稳定但响应稍慢
-;;;227        
-;;;228        // 2. 添加IIR低通滤波参数
-;;;229        #define IIR_ALPHA 0.5f        // 低通滤波系数 (0.1-0.5之间，越小越平滑)
-;;;230        
-;;;231        // 3. 调整显示阈值参数
-;;;232        #define DISPLAY_THRESHOLD 300 // 从157增加到200，减少频繁更新
-;;;233        #define DISPLAY_TIMEOUT 3000  // 超时时间稍作增加
-;;;234        
-;;;235        // ====== 变量定义部分 ======
-;;;236        static uint32_t median_buffer[MEDIAN_FILTER_SIZE] = {0};
-;;;237        static uint8_t median_index = 0;
-;;;238        static uint8_t median_initialized = 0;
-;;;239        
-;;;240        static int32_t accumulated_change = 0;
-;;;241        static uint32_t display_timeout_counter = 0;
-;;;242        static uint32_t last_display_adc = 0;
-;;;243        static uint32_t display_value = 0;
-;;;244    	static uint32_t pi_value = 0;
-;;;245        
-;;;246        // 新增：IIR低通滤波变量
-;;;247        static float iir_filtered = 0.0f;
-;;;248        
-;;;249        // 新增：噪声阈值检测变量
-;;;250        #define NOISE_THRESHOLD 50
-;;;251        static uint32_t last_raw_adc = 0;
-;;;252        static uint8_t high_noise_detected = 0;
-;;;253        
-;;;254        while(1)
-000022  e13c              B        |L9.670|
-                  |L9.36|
-;;;255    	{
-;;;256    		raw_adc = read_adc();
-000024  f7fffffe          BL       read_adc
-000028  4604              MOV      r4,r0
-;;;257            
-;;;258            // ====== 新增：噪声检测 ======
-;;;259            // 检测原始ADC的突变，判断是否为高频噪声
-;;;260            uint32_t raw_adc_change = abs(raw_adc - last_raw_adc);
-00002a  49a0              LDR      r1,|L9.684|
-00002c  6809              LDR      r1,[r1,#0]  ; last_raw_adc
-00002e  1a60              SUBS     r0,r4,r1
-000030  2800              CMP      r0,#0
-000032  db01              BLT      |L9.56|
-000034  4601              MOV      r1,r0
-000036  e000              B        |L9.58|
-                  |L9.56|
-000038  4241              RSBS     r1,r0,#0
-                  |L9.58|
-00003a  910a              STR      r1,[sp,#0x28]
-;;;261            if (raw_adc_change > NOISE_THRESHOLD) {
-00003c  990a              LDR      r1,[sp,#0x28]
-00003e  2932              CMP      r1,#0x32
-000040  d903              BLS      |L9.74|
-;;;262                high_noise_detected = 1;
-000042  2001              MOVS     r0,#1
-000044  499a              LDR      r1,|L9.688|
-000046  7008              STRB     r0,[r1,#0]
-000048  e002              B        |L9.80|
-                  |L9.74|
-;;;263            } else {
-;;;264                high_noise_detected = 0;
-00004a  2000              MOVS     r0,#0
-00004c  4998              LDR      r1,|L9.688|
-00004e  7008              STRB     r0,[r1,#0]
-                  |L9.80|
-;;;265            }
-;;;266            last_raw_adc = raw_adc;
-000050  4896              LDR      r0,|L9.684|
-000052  6004              STR      r4,[r0,#0]  ; last_raw_adc
-;;;267            
-;;;268            filtered_adc = filter_update(&filter, raw_adc);
-000054  4621              MOV      r1,r4
-000056  4892              LDR      r0,|L9.672|
-000058  f7fffffe          BL       filter_update
-00005c  900b              STR      r0,[sp,#0x2c]
-;;;269            
-;;;270            // ====== 中值滤波 ======
-;;;271            median_buffer[median_index] = filtered_adc;
-00005e  4995              LDR      r1,|L9.692|
-000060  7809              LDRB     r1,[r1,#0]  ; median_index
-000062  0089              LSLS     r1,r1,#2
-000064  4a94              LDR      r2,|L9.696|
-000066  980b              LDR      r0,[sp,#0x2c]
-000068  5050              STR      r0,[r2,r1]
-;;;272            median_index = (median_index + 1) % MEDIAN_FILTER_SIZE;
-00006a  2107              MOVS     r1,#7
-00006c  4891              LDR      r0,|L9.692|
-00006e  7800              LDRB     r0,[r0,#0]  ; median_index
-000070  1c40              ADDS     r0,r0,#1
-000072  f7fffffe          BL       __aeabi_idivmod
-000076  b2c8              UXTB     r0,r1
-000078  498e              LDR      r1,|L9.692|
-00007a  7008              STRB     r0,[r1,#0]
-;;;273            
-;;;274            if (!median_initialized && median_index == 0) {
-00007c  488f              LDR      r0,|L9.700|
-00007e  7800              LDRB     r0,[r0,#0]  ; median_initialized
-000080  2800              CMP      r0,#0
-000082  d106              BNE      |L9.146|
-000084  4608              MOV      r0,r1
-000086  7800              LDRB     r0,[r0,#0]  ; median_index
-000088  2800              CMP      r0,#0
-00008a  d102              BNE      |L9.146|
-;;;275                median_initialized = 1;
-00008c  2001              MOVS     r0,#1
-00008e  498b              LDR      r1,|L9.700|
-000090  7008              STRB     r0,[r1,#0]
-                  |L9.146|
-;;;276            }
-;;;277            
-;;;278            uint32_t median_filtered_adc;
-;;;279            if (median_initialized) {
-000092  488a              LDR      r0,|L9.700|
-000094  7800              LDRB     r0,[r0,#0]  ; median_initialized
-000096  2800              CMP      r0,#0
-000098  d033              BEQ      |L9.258|
-;;;280                // 复制到临时数组进行排序
-;;;281                uint32_t temp_buffer[MEDIAN_FILTER_SIZE];
-;;;282                for (uint8_t i = 0; i < MEDIAN_FILTER_SIZE; i++) {
-00009a  2000              MOVS     r0,#0
-00009c  e007              B        |L9.174|
-                  |L9.158|
-;;;283                    temp_buffer[i] = median_buffer[i];
-00009e  0081              LSLS     r1,r0,#2
-0000a0  4a85              LDR      r2,|L9.696|
-0000a2  5851              LDR      r1,[r2,r1]
-0000a4  0082              LSLS     r2,r0,#2
-0000a6  466b              MOV      r3,sp
-0000a8  5099              STR      r1,[r3,r2]
-0000aa  1c41              ADDS     r1,r0,#1              ;282
-0000ac  b2c8              UXTB     r0,r1                 ;282
-                  |L9.174|
-0000ae  2807              CMP      r0,#7                 ;282
-0000b0  dbf5              BLT      |L9.158|
-;;;284                }
-;;;285                
-;;;286                // 使用选择排序（比冒泡排序效率稍高）
-;;;287                for (uint8_t i = 0; i < MEDIAN_FILTER_SIZE - 1; i++) {
-0000b2  2000              MOVS     r0,#0
-0000b4  e020              B        |L9.248|
-                  |L9.182|
-;;;288                    uint8_t min_idx = i;
-0000b6  4601              MOV      r1,r0
-;;;289                    for (uint8_t j = i + 1; j < MEDIAN_FILTER_SIZE; j++) {
-0000b8  1c43              ADDS     r3,r0,#1
-0000ba  b2da              UXTB     r2,r3
-0000bc  e00a              B        |L9.212|
-                  |L9.190|
-;;;290                        if (temp_buffer[j] < temp_buffer[min_idx]) {
-0000be  0093              LSLS     r3,r2,#2
-0000c0  466e              MOV      r6,sp
-0000c2  58f3              LDR      r3,[r6,r3]
-0000c4  008e              LSLS     r6,r1,#2
-0000c6  466f              MOV      r7,sp
-0000c8  59be              LDR      r6,[r7,r6]
-0000ca  42b3              CMP      r3,r6
-0000cc  d200              BCS      |L9.208|
-;;;291                            min_idx = j;
-0000ce  4611              MOV      r1,r2
-                  |L9.208|
-0000d0  1c53              ADDS     r3,r2,#1              ;289
-0000d2  b2da              UXTB     r2,r3                 ;289
-                  |L9.212|
-0000d4  2a07              CMP      r2,#7                 ;289
-0000d6  dbf2              BLT      |L9.190|
-;;;292                        }
-;;;293                    }
-;;;294                    if (min_idx != i) {
-0000d8  4281              CMP      r1,r0
-0000da  d00b              BEQ      |L9.244|
-;;;295                        uint32_t temp = temp_buffer[i];
-0000dc  0083              LSLS     r3,r0,#2
-0000de  466e              MOV      r6,sp
-0000e0  58f2              LDR      r2,[r6,r3]
-;;;296                        temp_buffer[i] = temp_buffer[min_idx];
-0000e2  008b              LSLS     r3,r1,#2
-0000e4  58f3              LDR      r3,[r6,r3]
-0000e6  0086              LSLS     r6,r0,#2
-0000e8  466f              MOV      r7,sp
-0000ea  51bb              STR      r3,[r7,r6]
-;;;297                        temp_buffer[min_idx] = temp;
-0000ec  008b              LSLS     r3,r1,#2
-0000ee  466e              MOV      r6,sp
-0000f0  50f2              STR      r2,[r6,r3]
-;;;298                    }
-0000f2  bf00              NOP      
-                  |L9.244|
-0000f4  1c41              ADDS     r1,r0,#1              ;287
-0000f6  b2c8              UXTB     r0,r1                 ;287
-                  |L9.248|
-0000f8  2806              CMP      r0,#6                 ;287
-0000fa  dbdc              BLT      |L9.182|
-;;;299                }
-;;;300                median_filtered_adc = temp_buffer[MEDIAN_FILTER_SIZE / 2];
-0000fc  9803              LDR      r0,[sp,#0xc]
-0000fe  9009              STR      r0,[sp,#0x24]
-;;;301            } else {
-000100  e001              B        |L9.262|
-                  |L9.258|
-;;;302                median_filtered_adc = filtered_adc;
-000102  980b              LDR      r0,[sp,#0x2c]
-000104  9009              STR      r0,[sp,#0x24]
-                  |L9.262|
-;;;303            }
-;;;304            
-;;;305            // ====== 新增：IIR低通滤波 ======
-;;;306            // 一阶IIR低通滤波：y[n] = α * x[n] + (1-α) * y[n-1]
-;;;307            if (iir_filtered == 0.0f) {
-000106  2100              MOVS     r1,#0
-000108  486d              LDR      r0,|L9.704|
-00010a  6800              LDR      r0,[r0,#0]  ; iir_filtered
-00010c  f7fffffe          BL       __aeabi_cfcmpeq
-000110  d105              BNE      |L9.286|
-;;;308                // 第一次初始化
-;;;309                iir_filtered = (float)median_filtered_adc;
-000112  9809              LDR      r0,[sp,#0x24]
-000114  f7fffffe          BL       __aeabi_ui2f
-000118  4969              LDR      r1,|L9.704|
-00011a  6008              STR      r0,[r1,#0]  ; iir_filtered
-00011c  e014              B        |L9.328|
-                  |L9.286|
-;;;310            } else {
-;;;311                iir_filtered = IIR_ALPHA * (float)median_filtered_adc + (1.0f - IIR_ALPHA) * iir_filtered;
-00011e  4868              LDR      r0,|L9.704|
-000120  6801              LDR      r1,[r0,#0]  ; iir_filtered
-000122  203f              MOVS     r0,#0x3f
-000124  0600              LSLS     r0,r0,#24
-000126  f7fffffe          BL       __aeabi_fmul
-00012a  9006              STR      r0,[sp,#0x18]
-00012c  9809              LDR      r0,[sp,#0x24]
-00012e  f7fffffe          BL       __aeabi_ui2f
-000132  4607              MOV      r7,r0
-000134  213f              MOVS     r1,#0x3f
-000136  0609              LSLS     r1,r1,#24
-000138  f7fffffe          BL       __aeabi_fmul
-00013c  4606              MOV      r6,r0
-00013e  9906              LDR      r1,[sp,#0x18]
-000140  f7fffffe          BL       __aeabi_fadd
-000144  495e              LDR      r1,|L9.704|
-000146  6008              STR      r0,[r1,#0]  ; iir_filtered
-                  |L9.328|
-;;;312            }
-;;;313            
-;;;314            uint32_t final_filtered_adc = (uint32_t)iir_filtered;
-000148  485d              LDR      r0,|L9.704|
-00014a  6800              LDR      r0,[r0,#0]  ; iir_filtered
-00014c  f7fffffe          BL       __aeabi_f2uiz
-000150  4605              MOV      r5,r0
-;;;315            
-;;;316            // ====== 优化显示逻辑 ======
-;;;317            // 当检测到高频噪声时，增加阈值以防止误更新
-;;;318            uint32_t actual_threshold = DISPLAY_THRESHOLD;
-000152  20ff              MOVS     r0,#0xff
-000154  302d              ADDS     r0,r0,#0x2d
-000156  9008              STR      r0,[sp,#0x20]
-;;;319            if (high_noise_detected) {
-000158  4855              LDR      r0,|L9.688|
-00015a  7800              LDRB     r0,[r0,#0]  ; high_noise_detected
-00015c  2800              CMP      r0,#0
-00015e  d002              BEQ      |L9.358|
-;;;320                actual_threshold = DISPLAY_THRESHOLD * 2; // 噪声大时提高阈值
-000160  204b              MOVS     r0,#0x4b
-000162  00c0              LSLS     r0,r0,#3
-000164  9008              STR      r0,[sp,#0x20]
-                  |L9.358|
-;;;321            }
-;;;322            
-;;;323            // 计算累计变化
-;;;324            int32_t current_change = final_filtered_adc - last_display_adc;
-000166  4857              LDR      r0,|L9.708|
-000168  6800              LDR      r0,[r0,#0]  ; last_display_adc
-00016a  1a28              SUBS     r0,r5,r0
-00016c  9007              STR      r0,[sp,#0x1c]
-;;;325            accumulated_change += current_change;
-00016e  4856              LDR      r0,|L9.712|
-000170  6801              LDR      r1,[r0,#0]  ; accumulated_change
-000172  9807              LDR      r0,[sp,#0x1c]
-000174  1808              ADDS     r0,r1,r0
-000176  4954              LDR      r1,|L9.712|
-000178  6008              STR      r0,[r1,#0]  ; accumulated_change
-;;;326            
-;;;327            // 只有当累计变化超过阈值时才更新显示
-;;;328            if (abs(accumulated_change) > actual_threshold)
-00017a  6808              LDR      r0,[r1,#0]  ; accumulated_change
-00017c  2800              CMP      r0,#0
-00017e  db01              BLT      |L9.388|
-000180  4601              MOV      r1,r0
-000182  e000              B        |L9.390|
-                  |L9.388|
-000184  4241              RSBS     r1,r0,#0
-                  |L9.390|
-000186  9a08              LDR      r2,[sp,#0x20]
-000188  4291              CMP      r1,r2
-00018a  d90d              BLS      |L9.424|
-;;;329            {
-;;;330                display_value = final_filtered_adc / 10;
-00018c  210a              MOVS     r1,#0xa
-00018e  4628              MOV      r0,r5
-000190  f7fffffe          BL       __aeabi_uidivmod
-000194  494d              LDR      r1,|L9.716|
-000196  6008              STR      r0,[r1,#0]  ; display_value
-;;;331                last_display_adc = final_filtered_adc;
-000198  484a              LDR      r0,|L9.708|
-00019a  6005              STR      r5,[r0,#0]  ; last_display_adc
-;;;332                accumulated_change = 0;
-00019c  2000              MOVS     r0,#0
-00019e  494a              LDR      r1,|L9.712|
-0001a0  6008              STR      r0,[r1,#0]  ; accumulated_change
-;;;333                display_timeout_counter = 0;
-0001a2  494b              LDR      r1,|L9.720|
-0001a4  6008              STR      r0,[r1,#0]  ; display_timeout_counter
-0001a6  e016              B        |L9.470|
-                  |L9.424|
-;;;334            }
-;;;335            // 超时更新（防止长期小变化不更新）
-;;;336            else
-;;;337            {
-;;;338                display_timeout_counter++;
-0001a8  4849              LDR      r0,|L9.720|
-0001aa  6800              LDR      r0,[r0,#0]  ; display_timeout_counter
-0001ac  1c40              ADDS     r0,r0,#1
-0001ae  4948              LDR      r1,|L9.720|
-0001b0  6008              STR      r0,[r1,#0]  ; display_timeout_counter
-;;;339                if (display_timeout_counter >= DISPLAY_TIMEOUT)
-0001b2  4608              MOV      r0,r1
-0001b4  6800              LDR      r0,[r0,#0]  ; display_timeout_counter
-0001b6  4947              LDR      r1,|L9.724|
-0001b8  4288              CMP      r0,r1
-0001ba  d30c              BCC      |L9.470|
-;;;340                {
-;;;341                    display_value = final_filtered_adc / 10;
-0001bc  210a              MOVS     r1,#0xa
-0001be  4628              MOV      r0,r5
-0001c0  f7fffffe          BL       __aeabi_uidivmod
-0001c4  4941              LDR      r1,|L9.716|
-0001c6  6008              STR      r0,[r1,#0]  ; display_value
-;;;342                    last_display_adc = final_filtered_adc;
-0001c8  483e              LDR      r0,|L9.708|
-0001ca  6005              STR      r5,[r0,#0]  ; last_display_adc
-;;;343                    accumulated_change = 0;
-0001cc  2000              MOVS     r0,#0
-0001ce  493e              LDR      r1,|L9.712|
-0001d0  6008              STR      r0,[r1,#0]  ; accumulated_change
-;;;344                    display_timeout_counter = 0;
-0001d2  493f              LDR      r1,|L9.720|
-0001d4  6008              STR      r0,[r1,#0]  ; display_timeout_counter
-                  |L9.470|
-;;;345                }
-;;;346            }
-;;;347            
-;;;348            // 持续调用显示函数进行动态扫描
-;;;349    		
-;;;350    		if(display_value>pi_value)
-0001d6  483d              LDR      r0,|L9.716|
-0001d8  6800              LDR      r0,[r0,#0]  ; display_value
-0001da  493f              LDR      r1,|L9.728|
-0001dc  6809              LDR      r1,[r1,#0]  ; pi_value
-0001de  4288              CMP      r0,r1
-0001e0  d90c              BLS      |L9.508|
-;;;351    		{
-;;;352    			displayNumberOnTube((display_value-pi_value)*4/9);
-0001e2  493a              LDR      r1,|L9.716|
-0001e4  6809              LDR      r1,[r1,#0]  ; display_value
-0001e6  4a3c              LDR      r2,|L9.728|
-0001e8  6812              LDR      r2,[r2,#0]  ; pi_value
-0001ea  1a89              SUBS     r1,r1,r2
-0001ec  0088              LSLS     r0,r1,#2
-0001ee  2109              MOVS     r1,#9
-0001f0  f7fffffe          BL       __aeabi_uidivmod
-0001f4  4606              MOV      r6,r0
-0001f6  f7fffffe          BL       displayNumberOnTube
-0001fa  e002              B        |L9.514|
-                  |L9.508|
-;;;353    		}
-;;;354    		else
-;;;355    		{
-;;;356    			displayNumberOnTube(0);
-0001fc  2000              MOVS     r0,#0
-0001fe  f7fffffe          BL       displayNumberOnTube
-                  |L9.514|
-;;;357    		}
-;;;358    		
-;;;359    		WDT->WDT_CON |= WDT_CON_CLRWDT;  //清watchdog
-000202  4836              LDR      r0,|L9.732|
-000204  6bc0              LDR      r0,[r0,#0x3c]
-000206  2101              MOVS     r1,#1
-000208  4308              ORRS     r0,r0,r1
-00020a  4934              LDR      r1,|L9.732|
-00020c  63c8              STR      r0,[r1,#0x3c]
-;;;360    		if(TK_TouchKeyStatus&0x80)
-00020e  4834              LDR      r0,|L9.736|
-000210  7800              LDRB     r0,[r0,#0]  ; TK_TouchKeyStatus
-000212  2180              MOVS     r1,#0x80
-000214  4008              ANDS     r0,r0,r1
-000216  2800              CMP      r0,#0
-000218  d039              BEQ      |L9.654|
-;;;361    		{	   													 //重要步骤3：清除标志位，需要外部清除
-;;;362    			TK_TouchKeyStatus &= 0x7f; 
-00021a  4831              LDR      r0,|L9.736|
-00021c  7800              LDRB     r0,[r0,#0]  ; TK_TouchKeyStatus
-00021e  0640              LSLS     r0,r0,#25
-000220  0e40              LSRS     r0,r0,#25
-000222  492f              LDR      r1,|L9.736|
-000224  7008              STRB     r0,[r1,#0]
-;;;363    				TK_exKeyValueFlag = TK_TouchKeyScan();  
-000226  f7fffffe          BL       TK_TouchKeyScan
-00022a  492e              LDR      r1,|L9.740|
-00022c  6008              STR      r0,[r1,#0]  ; TK_exKeyValueFlag
-;;;364    				DebounceTouchKey();          // 先进行消抖处理
-00022e  f7fffffe          BL       DebounceTouchKey
-;;;365    				if(keyPressed)
-000232  482d              LDR      r0,|L9.744|
-000234  7800              LDRB     r0,[r0,#0]  ; keyPressed
-000236  2800              CMP      r0,#0
-000238  d027              BEQ      |L9.650|
-;;;366    				{
-;;;367    					ChangeTouchKeyvalue();   // 按键数据处理函数
-00023a  f7fffffe          BL       ChangeTouchKeyvalue
-;;;368    					if(exKeyValue==1)
-00023e  482b              LDR      r0,|L9.748|
-000240  7800              LDRB     r0,[r0,#0]  ; exKeyValue
-000242  2801              CMP      r0,#1
-000244  d106              BNE      |L9.596|
-;;;369    					{
-;;;370    						pi_value = display_value; 
-000246  4821              LDR      r0,|L9.716|
-000248  6800              LDR      r0,[r0,#0]  ; display_value
-00024a  4923              LDR      r1,|L9.728|
-00024c  6008              STR      r0,[r1,#0]  ; pi_value
-;;;371    						PB_OT(10);
-00024e  2001              MOVS     r0,#1
-000250  4915              LDR      r1,|L9.680|
-000252  7688              STRB     r0,[r1,#0x1a]
-                  |L9.596|
-;;;372    					}
-;;;373    					if(exKeyValue==2)
-000254  4825              LDR      r0,|L9.748|
-000256  7800              LDRB     r0,[r0,#0]  ; exKeyValue
-000258  2802              CMP      r0,#2
-00025a  d105              BNE      |L9.616|
-;;;374    					{
-;;;375    						pi_value = 0;
-00025c  2000              MOVS     r0,#0
-00025e  491e              LDR      r1,|L9.728|
-000260  6008              STR      r0,[r1,#0]  ; pi_value
-;;;376    						PB_OT(13);
-000262  2001              MOVS     r0,#1
-000264  4910              LDR      r1,|L9.680|
-000266  7748              STRB     r0,[r1,#0x1d]
-                  |L9.616|
-;;;377    					}
-;;;378    					if(exKeyValue==3)
-000268  4820              LDR      r0,|L9.748|
-00026a  7800              LDRB     r0,[r0,#0]  ; exKeyValue
-00026c  2803              CMP      r0,#3
-00026e  d102              BNE      |L9.630|
-;;;379    					{
-;;;380    						PB_OT(14);
-000270  2001              MOVS     r0,#1
-000272  490d              LDR      r1,|L9.680|
-000274  7788              STRB     r0,[r1,#0x1e]
-                  |L9.630|
-;;;381    					}
-;;;382    					if(exKeyValue==4)
-000276  481d              LDR      r0,|L9.748|
-000278  7800              LDRB     r0,[r0,#0]  ; exKeyValue
-00027a  2804              CMP      r0,#4
-00027c  d102              BNE      |L9.644|
-;;;383    					{
-;;;384    						PB_OT(15);
-00027e  2001              MOVS     r0,#1
-000280  4909              LDR      r1,|L9.680|
-000282  77c8              STRB     r0,[r1,#0x1f]
-                  |L9.644|
-;;;385    					}
-;;;386    					keyPressed = 0;          // 清除按键标志
-000284  2000              MOVS     r0,#0
-000286  4918              LDR      r1,|L9.744|
-000288  7008              STRB     r0,[r1,#0]
-                  |L9.650|
-;;;387    				}
-;;;388    				TK_Restart();	         //启动下一轮转换
-00028a  f7fffffe          BL       TK_Restart
-                  |L9.654|
-;;;389    		  }
-;;;390    		
-;;;391    
-;;;392    		  
-;;;393    		  {
-;;;394    			unsigned int i;
-;;;395    			for(i = 0; i < 1000; i++);
-00028e  2000              MOVS     r0,#0
-000290  e000              B        |L9.660|
-                  |L9.658|
-000292  1c40              ADDS     r0,r0,#1
-                  |L9.660|
-000294  217d              MOVS     r1,#0x7d
-000296  00c9              LSLS     r1,r1,#3
-000298  4288              CMP      r0,r1
-00029a  d3fa              BCC      |L9.658|
-;;;396    		}
-;;;397    		  
-;;;398    	}
-00029c  bf00              NOP      
-                  |L9.670|
-00029e  e6c1              B        |L9.36|
-;;;399    }
-;;;400    
+;;;173        
+;;;174        uint16_t first_adc = read_adc();                    // 先读一次作为初始值
+00000a  f7fffffe          BL       read_adc
+00000e  9002              STR      r0,[sp,#8]
+;;;175        Kalman_Init(&kf_weight, (float)first_adc, 0.01f, 1000.0f);  // 强滤波，空秤稳
+000010  9802              LDR      r0,[sp,#8]
+000012  f7fffffe          BL       __aeabi_ui2f
+000016  4604              MOV      r4,r0
+000018  4b41              LDR      r3,|L8.288|
+00001a  4a42              LDR      r2,|L8.292|
+00001c  4621              MOV      r1,r4
+00001e  4842              LDR      r0,|L8.296|
+000020  f7fffffe          BL       Kalman_Init
+;;;176    
+;;;177        OP_OffsetSet(OP);
+000024  4841              LDR      r0,|L8.300|
+000026  f7fffffe          BL       OP_OffsetSet
+;;;178        PB_BIT(10)=0;
+00002a  2000              MOVS     r0,#0
+00002c  4940              LDR      r1,|L8.304|
+00002e  7288              STRB     r0,[r1,#0xa]
+;;;179        PB_BIT(13)=0;
+000030  7348              STRB     r0,[r1,#0xd]
+;;;180        PB_BIT(14)=0;
+000032  7388              STRB     r0,[r1,#0xe]
+;;;181        PB_BIT(15)=0;
+000034  73c8              STRB     r0,[r1,#0xf]
+;;;182        
+;;;183        static uint32_t pi_value = 0;                       // 去皮值（浮点去皮，更精确）
+;;;184    
+;;;185        static float pi_value_float = 0.0f;  // 新增：浮点去皮值
+;;;186    
+;;;187        while(1)
+000036  e072              B        |L8.286|
+                  |L8.56|
+;;;188        {
+;;;189            uint16_t raw_adc = read_adc();                  // 已平均的值
+000038  f7fffffe          BL       read_adc
+00003c  9001              STR      r0,[sp,#4]
+;;;190    
+;;;191            // 卡尔曼滤波更新
+;;;192            float kalman_filtered = Kalman_Update(&kf_weight, (float)raw_adc);
+00003e  9801              LDR      r0,[sp,#4]
+000040  f7fffffe          BL       __aeabi_ui2f
+000044  4607              MOV      r7,r0
+000046  4639              MOV      r1,r7
+000048  4837              LDR      r0,|L8.296|
+00004a  f7fffffe          BL       Kalman_Update
+00004e  4604              MOV      r4,r0
+;;;193            
+;;;194            // 计算去皮后的浮点值
+;;;195            float current_float = kalman_filtered - pi_value_float;
+000050  4838              LDR      r0,|L8.308|
+000052  6801              LDR      r1,[r0,#0]  ; pi_value_float
+000054  4620              MOV      r0,r4
+000056  f7fffffe          BL       __aeabi_fsub
+00005a  4606              MOV      r6,r0
+;;;196            if(current_float < 0.0f) current_float = 0.0f;
+00005c  2100              MOVS     r1,#0
+00005e  4630              MOV      r0,r6
+000060  f7fffffe          BL       __aeabi_cfcmple
+000064  d200              BCS      |L8.104|
+000066  2600              MOVS     r6,#0
+                  |L8.104|
+;;;197    
+;;;198            // 四舍五入到最近的整数（显示精确、自然跳变）
+;;;199            uint32_t show_value = (uint32_t)(current_float + 0.5f + 25.0f);  // +0.5实现四舍五入
+000068  213f              MOVS     r1,#0x3f
+00006a  0609              LSLS     r1,r1,#24
+00006c  4630              MOV      r0,r6
+00006e  f7fffffe          BL       __aeabi_fadd
+000072  4931              LDR      r1,|L8.312|
+000074  9000              STR      r0,[sp,#0]
+000076  f7fffffe          BL       __aeabi_fadd
+00007a  4607              MOV      r7,r0
+00007c  f7fffffe          BL       __aeabi_f2uiz
+000080  4605              MOV      r5,r0
+;;;200    
+;;;201            // 先不除10！保持大值，等稳定了你再改这里加 /10 或其他系数
+;;;202            // uint32_t show_value_gram = show_value / 10;  // 示例：后期打开这行调克数
+;;;203    
+;;;204            displayNumberOnTube(show_value);
+000082  4628              MOV      r0,r5
+000084  f7fffffe          BL       displayNumberOnTube
+;;;205    
+;;;206            WDT->WDT_CON |= WDT_CON_CLRWDT; //清watchdog
+000088  482c              LDR      r0,|L8.316|
+00008a  6bc0              LDR      r0,[r0,#0x3c]
+00008c  2101              MOVS     r1,#1
+00008e  4308              ORRS     r0,r0,r1
+000090  492a              LDR      r1,|L8.316|
+000092  63c8              STR      r0,[r1,#0x3c]
+;;;207    
+;;;208            if(TK_TouchKeyStatus&0x80)
+000094  482a              LDR      r0,|L8.320|
+000096  7800              LDRB     r0,[r0,#0]  ; TK_TouchKeyStatus
+000098  2180              MOVS     r1,#0x80
+00009a  4008              ANDS     r0,r0,r1
+00009c  2800              CMP      r0,#0
+00009e  d037              BEQ      |L8.272|
+;;;209            {
+;;;210                TK_TouchKeyStatus &= 0x7f;
+0000a0  4827              LDR      r0,|L8.320|
+0000a2  7800              LDRB     r0,[r0,#0]  ; TK_TouchKeyStatus
+0000a4  0640              LSLS     r0,r0,#25
+0000a6  0e40              LSRS     r0,r0,#25
+0000a8  4925              LDR      r1,|L8.320|
+0000aa  7008              STRB     r0,[r1,#0]
+;;;211                TK_exKeyValueFlag = TK_TouchKeyScan();
+0000ac  f7fffffe          BL       TK_TouchKeyScan
+0000b0  4924              LDR      r1,|L8.324|
+0000b2  6008              STR      r0,[r1,#0]  ; TK_exKeyValueFlag
+;;;212                DebounceTouchKey();
+0000b4  f7fffffe          BL       DebounceTouchKey
+;;;213                if(keyPressed)
+0000b8  4823              LDR      r0,|L8.328|
+0000ba  7800              LDRB     r0,[r0,#0]  ; keyPressed
+0000bc  2800              CMP      r0,#0
+0000be  d025              BEQ      |L8.268|
+;;;214                {
+;;;215                    ChangeTouchKeyvalue();
+0000c0  f7fffffe          BL       ChangeTouchKeyvalue
+;;;216                    if(exKeyValue==1)
+0000c4  4821              LDR      r0,|L8.332|
+0000c6  7800              LDRB     r0,[r0,#0]  ; exKeyValue
+0000c8  2801              CMP      r0,#1
+0000ca  d104              BNE      |L8.214|
+;;;217                    {
+;;;218                        pi_value_float = kalman_filtered;  // 去皮用当前滤波浮点值（更准）
+0000cc  4819              LDR      r0,|L8.308|
+0000ce  6004              STR      r4,[r0,#0]  ; pi_value_float
+;;;219                        PB_OT(10);
+0000d0  2001              MOVS     r0,#1
+0000d2  4917              LDR      r1,|L8.304|
+0000d4  7688              STRB     r0,[r1,#0x1a]
+                  |L8.214|
+;;;220                    }
+;;;221                    if(exKeyValue==2)
+0000d6  481d              LDR      r0,|L8.332|
+0000d8  7800              LDRB     r0,[r0,#0]  ; exKeyValue
+0000da  2802              CMP      r0,#2
+0000dc  d105              BNE      |L8.234|
+;;;222                    {
+;;;223                        pi_value_float = 0.0f;
+0000de  2000              MOVS     r0,#0
+0000e0  4914              LDR      r1,|L8.308|
+0000e2  6008              STR      r0,[r1,#0]  ; pi_value_float
+;;;224                        PB_OT(13);
+0000e4  2001              MOVS     r0,#1
+0000e6  4912              LDR      r1,|L8.304|
+0000e8  7748              STRB     r0,[r1,#0x1d]
+                  |L8.234|
+;;;225                    }
+;;;226                    if(exKeyValue==3)
+0000ea  4818              LDR      r0,|L8.332|
+0000ec  7800              LDRB     r0,[r0,#0]  ; exKeyValue
+0000ee  2803              CMP      r0,#3
+0000f0  d102              BNE      |L8.248|
+;;;227                    {
+;;;228                        PB_OT(14);
+0000f2  2001              MOVS     r0,#1
+0000f4  490e              LDR      r1,|L8.304|
+0000f6  7788              STRB     r0,[r1,#0x1e]
+                  |L8.248|
+;;;229                    }
+;;;230                    if(exKeyValue==4)
+0000f8  4814              LDR      r0,|L8.332|
+0000fa  7800              LDRB     r0,[r0,#0]  ; exKeyValue
+0000fc  2804              CMP      r0,#4
+0000fe  d102              BNE      |L8.262|
+;;;231                    {
+;;;232                        PB_OT(15);
+000100  2001              MOVS     r0,#1
+000102  490b              LDR      r1,|L8.304|
+000104  77c8              STRB     r0,[r1,#0x1f]
+                  |L8.262|
+;;;233                    }
+;;;234                    keyPressed = 0;
+000106  2000              MOVS     r0,#0
+000108  490f              LDR      r1,|L8.328|
+00010a  7008              STRB     r0,[r1,#0]
+                  |L8.268|
+;;;235                }
+;;;236                TK_Restart();
+00010c  f7fffffe          BL       TK_Restart
+                  |L8.272|
+;;;237            }
+;;;238     
+;;;239            {
+;;;240                unsigned int i;
+;;;241                for(i = 0; i < 1500; i++);
+000110  2000              MOVS     r0,#0
+000112  e000              B        |L8.278|
+                  |L8.276|
+000114  1c40              ADDS     r0,r0,#1
+                  |L8.278|
+000116  490e              LDR      r1,|L8.336|
+000118  4288              CMP      r0,r1
+00011a  d3fb              BCC      |L8.276|
+;;;242            }
+;;;243     
+;;;244        }
+00011c  bf00              NOP      
+                  |L8.286|
+00011e  e78b              B        |L8.56|
+;;;245    }
+;;;246    /**
                           ENDP
 
-                  |L9.672|
-                          DCD      filter
-                  |L9.676|
+                  |L8.288|
+                          DCD      0x447a0000
+                  |L8.292|
+                          DCD      0x3c23d70a
+                  |L8.296|
+                          DCD      kf_weight
+                  |L8.300|
                           DCD      0x40022140
-                  |L9.680|
+                  |L8.304|
                           DCD      0x40011100
-                  |L9.684|
-                          DCD      last_raw_adc
-                  |L9.688|
-                          DCD      high_noise_detected
-                  |L9.692|
-                          DCD      median_index
-                  |L9.696|
-                          DCD      median_buffer
-                  |L9.700|
-                          DCD      median_initialized
-                  |L9.704|
-                          DCD      iir_filtered
-                  |L9.708|
-                          DCD      last_display_adc
-                  |L9.712|
-                          DCD      accumulated_change
-                  |L9.716|
-                          DCD      display_value
-                  |L9.720|
-                          DCD      display_timeout_counter
-                  |L9.724|
-                          DCD      0x00000bb8
-                  |L9.728|
-                          DCD      pi_value
-                  |L9.732|
+                  |L8.308|
+                          DCD      pi_value_float
+                  |L8.312|
+                          DCD      0x41c80000
+                  |L8.316|
                           DCD      0x40000300
-                  |L9.736|
+                  |L8.320|
                           DCD      TK_TouchKeyStatus
-                  |L9.740|
+                  |L8.324|
                           DCD      TK_exKeyValueFlag
-                  |L9.744|
+                  |L8.328|
                           DCD      keyPressed
-                  |L9.748|
+                  |L8.332|
                           DCD      exKeyValue
+                  |L8.336|
+                          DCD      0x000005dc
 
                           AREA ||i.read_adc||, CODE, READONLY, ALIGN=2
 
                   read_adc PROC
-;;;141    //读ADC
-;;;142    uint16_t read_adc()
-000000  b510              PUSH     {r4,lr}
-;;;143    {
-;;;144    		uint16_t	adcData ;
-;;;145    		ADC_SoftwareStartConv(ADC);             //软件触发	
-000002  4808              LDR      r0,|L10.36|
-000004  f7fffffe          BL       ADC_SoftwareStartConv
-;;;146    		while(ADC_Flag == RESET);               //等待
-000008  bf00              NOP      
-                  |L10.10|
-00000a  4807              LDR      r0,|L10.40|
-00000c  7800              LDRB     r0,[r0,#0]  ; ADC_Flag
-00000e  2800              CMP      r0,#0
-000010  d0fb              BEQ      |L10.10|
-;;;147    		ADC_Flag = RESET;
-000012  2000              MOVS     r0,#0
-000014  4904              LDR      r1,|L10.40|
-000016  7008              STRB     r0,[r1,#0]
-;;;148    		adcData =  ADC_GetConversionValue(ADC);  //采集ADC	
-000018  4802              LDR      r0,|L10.36|
-00001a  f7fffffe          BL       ADC_GetConversionValue
-00001e  4604              MOV      r4,r0
-;;;149    	return adcData;
-000020  4620              MOV      r0,r4
-;;;150    }
-000022  bd10              POP      {r4,pc}
-;;;151    #define WINDOW_SIZE 1024  // 滑动窗口大小
+;;;123    //读ADC（采8次平均，压噪声）
+;;;124    uint16_t read_adc()
+000000  b570              PUSH     {r4-r6,lr}
+;;;125    {
+;;;126        uint32_t sum = 0;
+000002  2400              MOVS     r4,#0
+;;;127        for(uint8_t i = 0; i < 8; i++) {  // 连续采8次取平均
+000004  2500              MOVS     r5,#0
+000006  e010              B        |L9.42|
+                  |L9.8|
+;;;128            ADC_SoftwareStartConv(ADC);
+000008  480a              LDR      r0,|L9.52|
+00000a  f7fffffe          BL       ADC_SoftwareStartConv
+;;;129            while(ADC_Flag == RESET);
+00000e  bf00              NOP      
+                  |L9.16|
+000010  4809              LDR      r0,|L9.56|
+000012  7800              LDRB     r0,[r0,#0]  ; ADC_Flag
+000014  2800              CMP      r0,#0
+000016  d0fb              BEQ      |L9.16|
+;;;130            ADC_Flag = RESET;
+000018  2000              MOVS     r0,#0
+00001a  4907              LDR      r1,|L9.56|
+00001c  7008              STRB     r0,[r1,#0]
+;;;131            sum += ADC_GetConversionValue(ADC);
+00001e  4805              LDR      r0,|L9.52|
+000020  f7fffffe          BL       ADC_GetConversionValue
+000024  1904              ADDS     r4,r0,r4
+000026  1c68              ADDS     r0,r5,#1              ;127
+000028  b2c5              UXTB     r5,r0                 ;127
+                  |L9.42|
+00002a  2d08              CMP      r5,#8                 ;127
+00002c  dbec              BLT      |L9.8|
+;;;132        }
+;;;133        return (uint16_t)(sum / 8);
+00002e  0360              LSLS     r0,r4,#13
+000030  0c00              LSRS     r0,r0,#16
+;;;134    }
+000032  bd70              POP      {r4-r6,pc}
+;;;135    
                           ENDP
 
-                  |L10.36|
+                  |L9.52|
                           DCD      0x40022110
-                  |L10.40|
+                  |L9.56|
                           DCD      ADC_Flag
 
                           AREA ||.bss||, DATA, NOINIT, ALIGN=2
 
-                  filter
-                          %        2056
-                  median_buffer
-                          %        28
+                  kf_weight
+                          %        20
 
                           AREA ||.constdata||, DATA, READONLY, ALIGN=0
 
@@ -1251,26 +775,10 @@
 00001a  00                DCB      0x00
                   currentPosition
 00001b  00                DCB      0x00
-                  median_index
-00001c  00                DCB      0x00
-                  median_initialized
-00001d  000000            DCB      0x00,0x00,0x00
-                  accumulated_change
-                          DCD      0x00000000
-                  display_timeout_counter
-                          DCD      0x00000000
-                  last_display_adc
-                          DCD      0x00000000
-                  display_value
-                          DCD      0x00000000
                   pi_value
                           DCD      0x00000000
-                  iir_filtered
-000034  00000000          DCFS     0x00000000 ; 0
-                  last_raw_adc
-                          DCD      0x00000000
-                  high_noise_detected
-00003c  00                DCB      0x00
+                  pi_value_float
+000020  00000000          DCFS     0x00000000 ; 0
 
 ;*** Start embedded assembler ***
 
