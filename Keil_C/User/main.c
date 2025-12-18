@@ -175,6 +175,96 @@ void WBB_Reset(void) {
 }
 
 
+
+// 音阶频率表（Hz），0 表示休止符（静音）
+const uint16_t noteFrequencies[] = {
+    0,    // 休止符
+    262,  // C4 (Do)
+    294,  // D4 (Re)
+    330,  // E4 (Mi)
+    349,  // F4 (Fa)
+    392,  // G4 (Sol)
+    440,  // A4 (La)
+    494,  // B4 (Si)
+    523,  // C5 (高 Do)
+    // 可以继续添加更高或更低的音阶
+};
+#define NOTE_REST 0
+#define NOTE_C4   1
+#define NOTE_D4   2
+#define NOTE_E4   3
+#define NOTE_F4   4
+#define NOTE_G4   5
+#define NOTE_A4   6
+#define NOTE_B4   7
+#define NOTE_C5   8
+
+// 超精确的微秒延迟（64MHz 时钟下校准，手动 nop 版）
+void delay_us(uint32_t us) {
+    while (us--) {
+        // 下面这一坨 nop 大概消耗 58~60 个周期，接近 1us
+        // 你可以实际听声音，多加或减几个 nop 来微调
+        __asm volatile ("nop"); __asm volatile ("nop"); __asm volatile ("nop");
+        __asm volatile ("nop"); __asm volatile ("nop"); __asm volatile ("nop");
+        __asm volatile ("nop"); __asm volatile ("nop"); __asm volatile ("nop");
+        __asm volatile ("nop"); __asm volatile ("nop"); __asm volatile ("nop"); 
+        __asm volatile ("nop");
+        // 一共大概 58 个 nop，你听声音高了就删几行，低了就再复制几行
+    }
+}
+
+
+// 播放单个音符
+void Buzzer_PlayTone(uint8_t note, uint16_t duration_ms) {
+    uint16_t frequency = noteFrequencies[note];
+    if (frequency == 0) {
+        // 休止符：静音，简单延迟
+        delay_us(duration_ms * 1000UL);
+        return;
+    }
+    
+    // 计算半周期微秒 (500000 / freq，避免浮点)
+    uint32_t half_period_us = 500000UL / frequency;
+    
+    // 计算总循环次数 (duration_ms * 1000 / (2 * half_period_us)) = duration_ms * frequency / 1000
+    uint32_t loops = (uint32_t)duration_ms * frequency / 1000UL;
+    
+    for (uint32_t i = 0; i < loops; i++) {
+        PC_OT(9);  // 翻转引脚
+        delay_us(half_period_us);  // 延迟半周期
+    }
+    
+    // 结束后静音一小会儿，避免音符黏连（可选，20ms）
+    delay_us(20000);
+}
+
+// 音符结构
+typedef struct {
+    uint8_t note;      // 音阶索引
+    uint16_t duration; // 持续时间 (ms)
+} Note;
+
+// 生日快乐歌序列（简单版）
+const Note happyBirthday[] = {
+    {NOTE_C4, 250}, {NOTE_C4, 125}, {NOTE_D4, 375}, {NOTE_C4, 375},
+    {NOTE_F4, 375}, {NOTE_E4, 750}, {NOTE_REST, 125},
+    {NOTE_C4, 250}, {NOTE_C4, 125}, {NOTE_D4, 375}, {NOTE_C4, 375},
+    {NOTE_G4, 375}, {NOTE_F4, 750}, {NOTE_REST, 125},
+    {NOTE_C4, 250}, {NOTE_C4, 125}, {NOTE_C5, 375}, {NOTE_A4, 375},
+    {NOTE_F4, 250}, {NOTE_F4, 125}, {NOTE_E4, 375}, {NOTE_D4, 750}, {NOTE_REST, 125},
+    {NOTE_B4, 250}, {NOTE_B4, 125}, {NOTE_A4, 375}, {NOTE_F4, 375},
+    {NOTE_G4, 375}, {NOTE_F4, 750}, {NOTE_REST, 500},  // 结束
+    {0, 0}  // 终止符
+};
+
+// 播放整首曲子
+void Buzzer_PlayMelody(const Note* melody) {
+    uint8_t i = 0;
+    while (melody[i].duration != 0) {
+        Buzzer_PlayTone(melody[i].note, melody[i].duration);
+        i++;
+    }
+}
 //void Buzzin(int hz, int t)
 //{
 //	for (int i=0;i<=t;++i)
@@ -187,29 +277,7 @@ void WBB_Reset(void) {
 //	}
 //}
 
-//void Beep(int freq, int duration_ms, uint32_t Sys_freq) {
-//    if (freq == 0) {
-//        // 休止符：只延迟，不发声
-//        SC_Delay(duration_ms);
-//        return;
-//    }
 
-//    // 计算半周期微秒数（方波高/低电平各一半）
-//    int half_period_us = 500000 / freq;  // 避免浮点运算
-
-//    // 计算总循环次数（每个循环 = 一个全周期）
-//    int cycles = (duration_ms * 1000) / (2 * half_period_us);
-
-//    for (int i = 0; i < cycles; i++) {
-//        PC_OT(9);  // 翻转 PC9（高电平）
-//        SC_Delay_us(half_period_us, Sys_freq);
-//        PC_OT(9);  // 翻转 PC9（低电平）
-//        SC_Delay_us(half_period_us, Sys_freq);
-//    }
-
-//    // 播放结束后，短暂静音（可选，避免音符连贯时干扰）
-//    SC_Delay(10);
-//}
 
 
 
@@ -218,7 +286,6 @@ int main(void)
 {
     IcResourceInit();
     TK_Init();
-//	SystemInit();
     int sum=0,xiuzheng=0;
     uint16_t first_adc = read_adc(); // 先读一次作为初始值
     Kalman_Init(&kf_weight, (float)first_adc, 0.01f, 1500.0f); // 强滤波，空秤稳
@@ -229,7 +296,7 @@ int main(void)
     PB_BIT(14)=1;
     PB_BIT(15)=0;
 
-//	uint32_t Sys_freq = SystemCoreClock / 1000000;  // MHz 单位
+
     while(1)
     {
         uint16_t raw_adc = read_adc(); // 已平均的值
@@ -303,7 +370,7 @@ int main(void)
                 }
                 if(exKeyValue==3)
                 {
-//                    Beep(262, 500, Sys_freq);  // 播放 C4 (do) 500ms
+                    Buzzer_PlayMelody(happyBirthday);
                 }
                 if(exKeyValue==4)
                 {
