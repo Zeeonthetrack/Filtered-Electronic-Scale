@@ -176,18 +176,25 @@ void WBB_Reset(void) {
 
 
 
-// 音阶频率表（Hz），0 表示休止符（静音）
+// 在数组里追加这些频率（把数组改大一点）
 const uint16_t noteFrequencies[] = {
-    0,    // 休止符
-    262,  // C4 (Do)
-    294,  // D4 (Re)
-    330,  // E4 (Mi)
-    349,  // F4 (Fa)
-    392,  // G4 (Sol)
-    440,  // A4 (La)
-    494,  // B4 (Si)
-    523,  // C5 (高 Do)
-    // 可以继续添加更高或更低的音阶
+    0,    // 0: 休止符
+    262,  // 1: C4
+    294,  // 2: D4
+    330,  // 3: E4
+    349,  // 4: F4
+    392,  // 5: G4
+    440,  // 6: A4
+    494,  // 7: B4
+    523,  // 8: C5
+    311,  // 9: Eb4
+    370,  // 10: F#4
+    415,  // 11: G#4
+    466,  // 12: Bb4
+    554,  // 13: Db5
+    622,  // 14: Eb5
+    740,  // 15: F#5
+    // 如果以后还要加更多音，可以继续往后加
 };
 #define NOTE_REST 0
 #define NOTE_C4   1
@@ -198,6 +205,14 @@ const uint16_t noteFrequencies[] = {
 #define NOTE_A4   6
 #define NOTE_B4   7
 #define NOTE_C5   8
+// 新增 Faded 需要的音阶（直接加到数组后面，继续编号）
+#define NOTE_Eb4  9   // Eb4 (降E) 311 Hz
+#define NOTE_Fs4 10   // F#4 (升F) 370 Hz
+#define NOTE_Gs4 11   // G#4 (升G) 415 Hz
+#define NOTE_Bb4 12   // Bb4 (降B) 466 Hz
+#define NOTE_Db5 13   // Db5 (降D，高音) 554 Hz
+#define NOTE_Eb5 14   // Eb5 (降E，高音) 622 Hz
+#define NOTE_Fs5 15   // F#5 (升F，高音) 740 Hz
 
 // 超精确的微秒延迟（64MHz 时钟下校准，手动 nop 版）
 void delay_us(uint32_t us) {
@@ -257,6 +272,8 @@ const Note happyBirthday[] = {
     {0, 0}  // 终止符
 };
 
+
+
 // 播放整首曲子
 void Buzzer_PlayMelody(const Note* melody) {
     uint8_t i = 0;
@@ -265,19 +282,6 @@ void Buzzer_PlayMelody(const Note* melody) {
         i++;
     }
 }
-//void Buzzin(int hz, int t)
-//{
-//	for (int i=0;i<=t;++i)
-//	{
-//		PC_OT(9);
-//		for (int j=0;j<=hz;++j)
-//		{
-//			
-//		}
-//	}
-//}
-
-
 
 
 
@@ -342,7 +346,28 @@ int main(void)
         // 四舍五入到最近的整数
         uint32_t show_value = (uint32_t)(current_float + 0.5f);
         
-        displayNumberOnTube(show_value+xiuzheng);
+		int Oversize = 0;
+		if(show_value+xiuzheng>450)
+		{
+			Oversize = 1;
+		}
+		else
+		{
+			Oversize = 0;
+		}
+		
+		if(!Oversize)
+		{
+			displayNumberOnTube(show_value+xiuzheng);
+		}
+		else
+		{
+			PA_BIT(6)=1;
+			PA_BIT(7)=1;
+			PA_BIT(8)=1;
+			PA_BIT(9)=1;
+			Buzzer_PlayMelody(happyBirthday);
+		}			
         WDT->WDT_CON |= WDT_CON_CLRWDT; //清watchdog
         if(TK_TouchKeyStatus&0x80)
         {
