@@ -263,12 +263,12 @@ typedef struct {
 const Note happyBirthday[] = {
     {NOTE_C4, 250}, {NOTE_C4, 125}, {NOTE_D4, 375}, {NOTE_C4, 375},
     {NOTE_F4, 375}, {NOTE_E4, 750}, {NOTE_REST, 125},
-    {NOTE_C4, 250}, {NOTE_C4, 125}, {NOTE_D4, 375}, {NOTE_C4, 375},
-    {NOTE_G4, 375}, {NOTE_F4, 750}, {NOTE_REST, 125},
-    {NOTE_C4, 250}, {NOTE_C4, 125}, {NOTE_C5, 375}, {NOTE_A4, 375},
-    {NOTE_F4, 250}, {NOTE_F4, 125}, {NOTE_E4, 375}, {NOTE_D4, 750}, {NOTE_REST, 125},
-    {NOTE_B4, 250}, {NOTE_B4, 125}, {NOTE_A4, 375}, {NOTE_F4, 375},
-    {NOTE_G4, 375}, {NOTE_F4, 750}, {NOTE_REST, 500},  // 结束
+//    {NOTE_C4, 250}, {NOTE_C4, 125}, {NOTE_D4, 375}, {NOTE_C4, 375},
+//    {NOTE_G4, 375}, {NOTE_F4, 750}, {NOTE_REST, 125},
+//    {NOTE_C4, 250}, {NOTE_C4, 125}, {NOTE_C5, 375}, {NOTE_A4, 375},
+//    {NOTE_F4, 250}, {NOTE_F4, 125}, {NOTE_E4, 375}, {NOTE_D4, 750}, {NOTE_REST, 125},
+//    {NOTE_B4, 250}, {NOTE_B4, 125}, {NOTE_A4, 375}, {NOTE_F4, 375},
+//    {NOTE_G4, 375}, {NOTE_F4, 750}, {NOTE_REST, 500},  // 结束
     {0, 0}  // 终止符
 };
 
@@ -286,6 +286,20 @@ void Buzzer_PlayMelody(const Note* melody) {
 
 
 // ========================================================
+
+void DBL()
+{
+	PB_BIT(10)=1;
+    PB_BIT(13)=1;
+    PB_BIT(14)=1;
+    PB_BIT(15)=1;
+	PA_BIT(6)=1;
+	PA_BIT(7)=1;
+	PA_BIT(8)=1;
+	PA_BIT(9)=1;
+}
+
+
 int main(void)
 {
     IcResourceInit();
@@ -347,7 +361,7 @@ int main(void)
         uint32_t show_value = (uint32_t)(current_float + 0.5f);
         
 		int Oversize = 0;
-		if(show_value+xiuzheng>450)
+		if(show_value+xiuzheng>1000)
 		{
 			Oversize = 1;
 		}
@@ -362,10 +376,8 @@ int main(void)
 		}
 		else
 		{
-			PA_BIT(6)=1;
-			PA_BIT(7)=1;
-			PA_BIT(8)=1;
-			PA_BIT(9)=1;
+			DBL();
+			show_value = 700;
 			Buzzer_PlayMelody(happyBirthday);
 		}			
         WDT->WDT_CON |= WDT_CON_CLRWDT; //清watchdog
