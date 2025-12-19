@@ -420,7 +420,16 @@ int main(void)
                 }
                 if(exKeyValue==4)
                 {
-                    
+					if(counter>persec*10) counter=0;
+					else counter=persec*10+1;
+					if(sleep==0)
+					{
+						sleep = 1;
+					}
+					else
+					{
+						sleep = 0;
+					}
                 }
                 keyPressed = 0;
             }
@@ -431,6 +440,7 @@ int main(void)
             for(i = 0; i < 1500; i++);
         }
 		counter++;
+		if(counter>=persec*20) counter=persec*20;
 		if(counter>10*persec)
 		{
 			sleep = 1;
