@@ -167,7 +167,7 @@ float wbb_buffer[WBB_BUFFER_SIZE];
 uint16_t wbb_index = 0;
 uint8_t wbb_full = 0;         // 缓冲区是否已满
 float wbb_stable_value = 0.0f; // 当前计算出的稳定中值
-float pi_value_float = 130.0f;    // 去皮值（浮点，更精确）
+float pi_value_float = 0.0f;    // 去皮值（浮点，更精确）
 
 void WBB_Reset(void) {
     wbb_index = 0;
@@ -379,7 +379,14 @@ int main(void)
 			if(!sleep)
 			{
 //				displayNumberOnTube(counter/10);
-				displayNumberOnTube(show_value+xiuzheng);
+				if(show_value+xiuzheng<=26)
+				{
+					displayNumberOnTube(0);
+				}
+				else
+				{
+					displayNumberOnTube(show_value+xiuzheng);
+				}	
 			}				
 			
 		}
@@ -446,12 +453,12 @@ int main(void)
 			sleep = 1;
 			DBL();
 		}
-		if(counter%(persec*5)==0)
+		if(counter%(persec*2)==0)
 		{
 			int cha;
 			if(qian>show_value) cha=qian-show_value;
 			else cha=show_value-qian;
-			if(cha>50)
+			if(cha>20)
 			{
 				counter=0;
 				sleep=0;
