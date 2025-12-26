@@ -264,12 +264,12 @@ typedef struct {
 const Note happyBirthday[] = {
     {NOTE_C4, 250}, {NOTE_C4, 125}, {NOTE_D4, 375}, {NOTE_C4, 375},
     {NOTE_F4, 375}, {NOTE_E4, 750}, {NOTE_REST, 125},
-//    {NOTE_C4, 250}, {NOTE_C4, 125}, {NOTE_D4, 375}, {NOTE_C4, 375},
-//    {NOTE_G4, 375}, {NOTE_F4, 750}, {NOTE_REST, 125},
-//    {NOTE_C4, 250}, {NOTE_C4, 125}, {NOTE_C5, 375}, {NOTE_A4, 375},
-//    {NOTE_F4, 250}, {NOTE_F4, 125}, {NOTE_E4, 375}, {NOTE_D4, 750}, {NOTE_REST, 125},
-//    {NOTE_B4, 250}, {NOTE_B4, 125}, {NOTE_A4, 375}, {NOTE_F4, 375},
-//    {NOTE_G4, 375}, {NOTE_F4, 750}, {NOTE_REST, 500},  // 结束
+    {NOTE_C4, 250}, {NOTE_C4, 125}, {NOTE_D4, 375}, {NOTE_C4, 375},
+    {NOTE_G4, 375}, {NOTE_F4, 750}, {NOTE_REST, 125},
+    {NOTE_C4, 250}, {NOTE_C4, 125}, {NOTE_C5, 375}, {NOTE_A4, 375},
+    {NOTE_F4, 250}, {NOTE_F4, 125}, {NOTE_E4, 375}, {NOTE_D4, 750}, {NOTE_REST, 125},
+    {NOTE_B4, 250}, {NOTE_B4, 125}, {NOTE_A4, 375}, {NOTE_F4, 375},
+    {NOTE_G4, 375}, {NOTE_F4, 750}, {NOTE_REST, 500},  // 结束
     {0, 0}  // 终止符
 };
 
@@ -379,7 +379,7 @@ int main(void)
 			if(!sleep)
 			{
 //				displayNumberOnTube(counter/10);
-				if(show_value+xiuzheng<=26)
+				if(show_value+xiuzheng<=30)
 				{
 					displayNumberOnTube(0);
 				}
@@ -423,6 +423,7 @@ int main(void)
                 }
                 if(exKeyValue==3)
                 {
+					DBL();
                     Buzzer_PlayMelody(happyBirthday);
                 }
                 if(exKeyValue==4)
@@ -447,8 +448,8 @@ int main(void)
             for(i = 0; i < 1500; i++);
         }
 		counter++;
-		if(counter>=persec*20) counter=persec*20;
-		if(counter>10*persec)
+		if(counter>=persec*40) counter=persec*40;
+		if(counter>20*persec)
 		{
 			sleep = 1;
 			DBL();

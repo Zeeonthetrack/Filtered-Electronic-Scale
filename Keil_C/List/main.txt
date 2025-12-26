@@ -121,11 +121,11 @@
                           AREA ||i.ChangeTouchKeyvalue||, CODE, READONLY, ALIGN=2
 
                   ChangeTouchKeyvalue PROC
-;;;506      */
-;;;507    void ChangeTouchKeyvalue(void)
+;;;507      */
+;;;508    void ChangeTouchKeyvalue(void)
 000000  4810              LDR      r0,|L3.68|
-;;;508    {
-;;;509        switch(stableKeyValue)
+;;;509    {
+;;;510        switch(stableKeyValue)
 000002  6800              LDR      r0,[r0,#0]  ; stableKeyValue
 000004  2810              CMP      r0,#0x10
 000006  d006              BEQ      |L3.22|
@@ -137,50 +137,50 @@
 000012  d110              BNE      |L3.54|
 000014  e00b              B        |L3.46|
                   |L3.22|
-;;;510        {
-;;;511            case 0x00000010:
-;;;512                exKeyValue = 1;
+;;;511        {
+;;;512            case 0x00000010:
+;;;513                exKeyValue = 1;
 000016  2001              MOVS     r0,#1
 000018  490b              LDR      r1,|L3.72|
 00001a  7008              STRB     r0,[r1,#0]
-;;;513                break;
+;;;514                break;
 00001c  e00f              B        |L3.62|
                   |L3.30|
-;;;514            case 0x00000020:
-;;;515                exKeyValue = 2;
+;;;515            case 0x00000020:
+;;;516                exKeyValue = 2;
 00001e  2002              MOVS     r0,#2
 000020  4909              LDR      r1,|L3.72|
 000022  7008              STRB     r0,[r1,#0]
-;;;516                break;
+;;;517                break;
 000024  e00b              B        |L3.62|
                   |L3.38|
-;;;517            case 0x00000040:
-;;;518                exKeyValue = 3;
+;;;518            case 0x00000040:
+;;;519                exKeyValue = 3;
 000026  2003              MOVS     r0,#3
 000028  4907              LDR      r1,|L3.72|
 00002a  7008              STRB     r0,[r1,#0]
-;;;519                break;
+;;;520                break;
 00002c  e007              B        |L3.62|
                   |L3.46|
-;;;520            case 0x00000080:
-;;;521                exKeyValue = 4;
+;;;521            case 0x00000080:
+;;;522                exKeyValue = 4;
 00002e  2004              MOVS     r0,#4
 000030  4905              LDR      r1,|L3.72|
 000032  7008              STRB     r0,[r1,#0]
-;;;522                break;
+;;;523                break;
 000034  e003              B        |L3.62|
                   |L3.54|
-;;;523            default:
-;;;524                exKeyValue = 0xff;
+;;;524            default:
+;;;525                exKeyValue = 0xff;
 000036  20ff              MOVS     r0,#0xff
 000038  4903              LDR      r1,|L3.72|
 00003a  7008              STRB     r0,[r1,#0]
-;;;525                break;
+;;;526                break;
 00003c  bf00              NOP      
                   |L3.62|
-00003e  bf00              NOP                            ;513
-;;;526        }
-;;;527    }
+00003e  bf00              NOP                            ;514
+;;;527        }
+;;;528    }
 000040  4770              BX       lr
                           ENDP
 
@@ -228,87 +228,87 @@
                           AREA ||i.DebounceTouchKey||, CODE, READONLY, ALIGN=2
 
                   DebounceTouchKey PROC
-;;;474      */
-;;;475    void DebounceTouchKey(void)
+;;;475      */
+;;;476    void DebounceTouchKey(void)
 000000  4817              LDR      r0,|L5.96|
-;;;476    {
-;;;477        if(TK_exKeyValueFlag == lastKeyValue)
+;;;477    {
+;;;478        if(TK_exKeyValueFlag == lastKeyValue)
 000002  6800              LDR      r0,[r0,#0]  ; TK_exKeyValueFlag
 000004  4917              LDR      r1,|L5.100|
 000006  6809              LDR      r1,[r1,#0]  ; lastKeyValue
 000008  4288              CMP      r0,r1
 00000a  d119              BNE      |L5.64|
-;;;478        {
-;;;479            debounceCount++;
+;;;479        {
+;;;480            debounceCount++;
 00000c  4816              LDR      r0,|L5.104|
 00000e  7800              LDRB     r0,[r0,#0]  ; debounceCount
 000010  1c40              ADDS     r0,r0,#1
 000012  4915              LDR      r1,|L5.104|
 000014  7008              STRB     r0,[r1,#0]
-;;;480            if(debounceCount >= 5)
+;;;481            if(debounceCount >= 5)
 000016  4608              MOV      r0,r1
 000018  7800              LDRB     r0,[r0,#0]  ; debounceCount
 00001a  2805              CMP      r0,#5
 00001c  db17              BLT      |L5.78|
-;;;481            {
-;;;482                if(stableKeyValue != TK_exKeyValueFlag)
+;;;482            {
+;;;483                if(stableKeyValue != TK_exKeyValueFlag)
 00001e  4813              LDR      r0,|L5.108|
 000020  6800              LDR      r0,[r0,#0]  ; stableKeyValue
 000022  490f              LDR      r1,|L5.96|
 000024  6809              LDR      r1,[r1,#0]  ; TK_exKeyValueFlag
 000026  4288              CMP      r0,r1
 000028  d006              BEQ      |L5.56|
-;;;483                {
-;;;484                    stableKeyValue = TK_exKeyValueFlag;
+;;;484                {
+;;;485                    stableKeyValue = TK_exKeyValueFlag;
 00002a  480d              LDR      r0,|L5.96|
 00002c  6800              LDR      r0,[r0,#0]  ; TK_exKeyValueFlag
 00002e  490f              LDR      r1,|L5.108|
 000030  6008              STR      r0,[r1,#0]  ; stableKeyValue
-;;;485                    keyPressed = 1;
+;;;486                    keyPressed = 1;
 000032  2001              MOVS     r0,#1
 000034  490e              LDR      r1,|L5.112|
 000036  7008              STRB     r0,[r1,#0]
                   |L5.56|
-;;;486                }
-;;;487                debounceCount = 5;
+;;;487                }
+;;;488                debounceCount = 5;
 000038  2005              MOVS     r0,#5
 00003a  490b              LDR      r1,|L5.104|
 00003c  7008              STRB     r0,[r1,#0]
 00003e  e006              B        |L5.78|
                   |L5.64|
-;;;488            }
-;;;489        }
-;;;490        else
-;;;491        {
-;;;492            debounceCount = 0;
+;;;489            }
+;;;490        }
+;;;491        else
+;;;492        {
+;;;493            debounceCount = 0;
 000040  2000              MOVS     r0,#0
 000042  4909              LDR      r1,|L5.104|
 000044  7008              STRB     r0,[r1,#0]
-;;;493            lastKeyValue = TK_exKeyValueFlag;
+;;;494            lastKeyValue = TK_exKeyValueFlag;
 000046  4806              LDR      r0,|L5.96|
 000048  6800              LDR      r0,[r0,#0]  ; TK_exKeyValueFlag
 00004a  4906              LDR      r1,|L5.100|
 00004c  6008              STR      r0,[r1,#0]  ; lastKeyValue
                   |L5.78|
-;;;494        }
-;;;495      
-;;;496        if(TK_exKeyValueFlag == 0)
+;;;495        }
+;;;496      
+;;;497        if(TK_exKeyValueFlag == 0)
 00004e  4804              LDR      r0,|L5.96|
 000050  6800              LDR      r0,[r0,#0]  ; TK_exKeyValueFlag
 000052  2800              CMP      r0,#0
 000054  d103              BNE      |L5.94|
-;;;497        {
-;;;498            debounceCount = 0;
+;;;498        {
+;;;499            debounceCount = 0;
 000056  4904              LDR      r1,|L5.104|
 000058  7008              STRB     r0,[r1,#0]
-;;;499            stableKeyValue = 0;
+;;;500            stableKeyValue = 0;
 00005a  4904              LDR      r1,|L5.108|
 00005c  6008              STR      r0,[r1,#0]  ; stableKeyValue
                   |L5.94|
-;;;500        }
-;;;501    }
+;;;501        }
+;;;502    }
 00005e  4770              BX       lr
-;;;502    /**
+;;;503    /**
                           ENDP
 
                   |L5.96|
@@ -680,19 +680,19 @@
 000016  980b              LDR      r0,[sp,#0x2c]
 000018  f7fffffe          BL       __aeabi_ui2f
 00001c  4604              MOV      r4,r0
-00001e  4bb6              LDR      r3,|L13.760|
-000020  4ab6              LDR      r2,|L13.764|
+00001e  4bb7              LDR      r3,|L13.764|
+000020  4ab7              LDR      r2,|L13.768|
 000022  4621              MOV      r1,r4
-000024  48b6              LDR      r0,|L13.768|
+000024  48b7              LDR      r0,|L13.772|
 000026  f7fffffe          BL       Kalman_Init
 ;;;311        WBB_Reset(); // 初始化歪比巴卜缓冲区
 00002a  f7fffffe          BL       WBB_Reset
 ;;;312        OP_OffsetSet(OP);
-00002e  48b5              LDR      r0,|L13.772|
+00002e  48b6              LDR      r0,|L13.776|
 000030  f7fffffe          BL       OP_OffsetSet
 ;;;313        PB_BIT(10)=0;
 000034  2000              MOVS     r0,#0
-000036  49b4              LDR      r1,|L13.776|
+000036  49b5              LDR      r1,|L13.780|
 000038  7288              STRB     r0,[r1,#0xa]
 ;;;314        PB_BIT(13)=0;
 00003a  7348              STRB     r0,[r1,#0xd]
@@ -709,7 +709,7 @@
 000044  9009              STR      r0,[sp,#0x24]
 ;;;321    	
 ;;;322        while(1)
-000046  e155              B        |L13.756|
+000046  e157              B        |L13.760|
                   |L13.72|
 ;;;323        {
 ;;;324            uint16_t raw_adc = read_adc(); // 已平均的值
@@ -721,22 +721,22 @@
 000050  f7fffffe          BL       __aeabi_ui2f
 000054  4606              MOV      r6,r0
 000056  4631              MOV      r1,r6
-000058  48a9              LDR      r0,|L13.768|
+000058  48aa              LDR      r0,|L13.772|
 00005a  f7fffffe          BL       Kalman_Update
 00005e  4605              MOV      r5,r0
 ;;;327           
 ;;;328            // === 歪比巴卜核心：存入缓冲区 ===
 ;;;329            wbb_buffer[wbb_index] = kalman_filtered;
-000060  48aa              LDR      r0,|L13.780|
+000060  48ab              LDR      r0,|L13.784|
 000062  8800              LDRH     r0,[r0,#0]  ; wbb_index
 000064  0080              LSLS     r0,r0,#2
-000066  49aa              LDR      r1,|L13.784|
+000066  49ab              LDR      r1,|L13.788|
 000068  500d              STR      r5,[r1,r0]
 ;;;330            wbb_index++;
-00006a  48a8              LDR      r0,|L13.780|
+00006a  48a9              LDR      r0,|L13.784|
 00006c  8800              LDRH     r0,[r0,#0]  ; wbb_index
 00006e  1c40              ADDS     r0,r0,#1
-000070  49a6              LDR      r1,|L13.780|
+000070  49a7              LDR      r1,|L13.784|
 000072  8008              STRH     r0,[r1,#0]
 ;;;331            if (wbb_index >= WBB_BUFFER_SIZE) {
 000074  4608              MOV      r0,r1
@@ -747,11 +747,11 @@
 00007e  db05              BLT      |L13.140|
 ;;;332                wbb_index = 0;
 000080  2000              MOVS     r0,#0
-000082  49a2              LDR      r1,|L13.780|
+000082  49a3              LDR      r1,|L13.784|
 000084  8008              STRH     r0,[r1,#0]
 ;;;333                wbb_full = 1; // 缓冲区已满
 000086  2001              MOVS     r0,#1
-000088  49a2              LDR      r1,|L13.788|
+000088  49a3              LDR      r1,|L13.792|
 00008a  7008              STRB     r0,[r1,#0]
                   |L13.140|
 ;;;334            }
@@ -760,16 +760,16 @@
 ;;;337            float current_stable = kalman_filtered; // 默认用当前Kalman值（缓冲未满时）
 00008c  9507              STR      r5,[sp,#0x1c]
 ;;;338            if (wbb_full) {
-00008e  48a1              LDR      r0,|L13.788|
+00008e  48a2              LDR      r0,|L13.792|
 000090  7800              LDRB     r0,[r0,#0]  ; wbb_full
 000092  2800              CMP      r0,#0
 000094  d040              BEQ      |L13.280|
 ;;;339                float max_val = wbb_buffer[0];
-000096  489e              LDR      r0,|L13.784|
+000096  489f              LDR      r0,|L13.788|
 000098  6800              LDR      r0,[r0,#0]  ; wbb_buffer
 00009a  9003              STR      r0,[sp,#0xc]
 ;;;340                float min_val = wbb_buffer[0];
-00009c  489c              LDR      r0,|L13.784|
+00009c  489d              LDR      r0,|L13.788|
 00009e  6800              LDR      r0,[r0,#0]  ; wbb_buffer
 0000a0  9002              STR      r0,[sp,#8]
 ;;;341                for (uint16_t i = 1; i < WBB_BUFFER_SIZE; i++) {
@@ -778,25 +778,25 @@
                   |L13.166|
 ;;;342                    if (wbb_buffer[i] > max_val) max_val = wbb_buffer[i];
 0000a6  00b1              LSLS     r1,r6,#2
-0000a8  4a99              LDR      r2,|L13.784|
+0000a8  4a9a              LDR      r2,|L13.788|
 0000aa  5850              LDR      r0,[r2,r1]
 0000ac  9903              LDR      r1,[sp,#0xc]
 0000ae  f7fffffe          BL       __aeabi_cfrcmple
 0000b2  d203              BCS      |L13.188|
 0000b4  00b0              LSLS     r0,r6,#2
-0000b6  4996              LDR      r1,|L13.784|
+0000b6  4997              LDR      r1,|L13.788|
 0000b8  5808              LDR      r0,[r1,r0]
 0000ba  9003              STR      r0,[sp,#0xc]
                   |L13.188|
 ;;;343                    if (wbb_buffer[i] < min_val) min_val = wbb_buffer[i];
 0000bc  00b1              LSLS     r1,r6,#2
-0000be  4a94              LDR      r2,|L13.784|
+0000be  4a95              LDR      r2,|L13.788|
 0000c0  5850              LDR      r0,[r2,r1]
 0000c2  9902              LDR      r1,[sp,#8]
 0000c4  f7fffffe          BL       __aeabi_cfcmple
 0000c8  d203              BCS      |L13.210|
 0000ca  00b0              LSLS     r0,r6,#2
-0000cc  4990              LDR      r1,|L13.784|
+0000cc  4991              LDR      r1,|L13.788|
 0000ce  5808              LDR      r0,[r1,r0]
 0000d0  9002              STR      r0,[sp,#8]
                   |L13.210|
@@ -819,20 +819,20 @@
 0000f0  9001              STR      r0,[sp,#4]
 ;;;346                // 轻微平滑，避免小抖动
 ;;;347                current_stable = 0.3f * wbb_stable_value + 0.7f * mid_val;
-0000f2  4889              LDR      r0,|L13.792|
+0000f2  488a              LDR      r0,|L13.796|
 0000f4  9901              LDR      r1,[sp,#4]
 0000f6  f7fffffe          BL       __aeabi_fmul
 0000fa  4606              MOV      r6,r0
-0000fc  4887              LDR      r0,|L13.796|
+0000fc  4888              LDR      r0,|L13.800|
 0000fe  6801              LDR      r1,[r0,#0]  ; wbb_stable_value
-000100  4887              LDR      r0,|L13.800|
+000100  4888              LDR      r0,|L13.804|
 000102  f7fffffe          BL       __aeabi_fmul
 000106  4631              MOV      r1,r6
 000108  9000              STR      r0,[sp,#0]
 00010a  f7fffffe          BL       __aeabi_fadd
 00010e  9007              STR      r0,[sp,#0x1c]
 ;;;348                wbb_stable_value = current_stable;
-000110  4982              LDR      r1,|L13.796|
+000110  4983              LDR      r1,|L13.800|
 000112  9807              LDR      r0,[sp,#0x1c]
 000114  6008              STR      r0,[r1,#0]  ; wbb_stable_value
 ;;;349            }
@@ -842,12 +842,12 @@
 ;;;351            // === 检测大变化，重置缓冲区 ===
 ;;;352    		float sss;
 ;;;353    		if(kalman_filtered>wbb_stable_value) sss=kalman_filtered-wbb_stable_value;
-000118  4880              LDR      r0,|L13.796|
+000118  4881              LDR      r0,|L13.800|
 00011a  6801              LDR      r1,[r0,#0]  ; wbb_stable_value
 00011c  4628              MOV      r0,r5
 00011e  f7fffffe          BL       __aeabi_cfrcmple
 000122  d206              BCS      |L13.306|
-000124  487d              LDR      r0,|L13.796|
+000124  487e              LDR      r0,|L13.800|
 000126  6801              LDR      r1,[r0,#0]  ; wbb_stable_value
 000128  4628              MOV      r0,r5
 00012a  f7fffffe          BL       __aeabi_fsub
@@ -856,21 +856,21 @@
                   |L13.306|
 ;;;354    		else sss=wbb_stable_value-kalman_filtered;
 000132  4629              MOV      r1,r5
-000134  4879              LDR      r0,|L13.796|
+000134  487a              LDR      r0,|L13.800|
 000136  6800              LDR      r0,[r0,#0]  ; wbb_stable_value
 000138  f7fffffe          BL       __aeabi_fsub
 00013c  9006              STR      r0,[sp,#0x18]
                   |L13.318|
 ;;;355            if ((sss > 9000.0f) || (!wbb_full && wbb_index > 500)) {
-00013e  4979              LDR      r1,|L13.804|
+00013e  497a              LDR      r1,|L13.808|
 000140  9806              LDR      r0,[sp,#0x18]
 000142  f7fffffe          BL       __aeabi_cfrcmple
 000146  d309              BCC      |L13.348|
-000148  4872              LDR      r0,|L13.788|
+000148  4873              LDR      r0,|L13.792|
 00014a  7800              LDRB     r0,[r0,#0]  ; wbb_full
 00014c  2800              CMP      r0,#0
 00014e  d10a              BNE      |L13.358|
-000150  486e              LDR      r0,|L13.780|
+000150  486f              LDR      r0,|L13.784|
 000152  8800              LDRH     r0,[r0,#0]  ; wbb_index
 000154  21ff              MOVS     r1,#0xff
 000156  31f5              ADDS     r1,r1,#0xf5
@@ -880,7 +880,7 @@
 ;;;356                WBB_Reset(); // 重置，重新收集数据
 00015c  f7fffffe          BL       WBB_Reset
 ;;;357                wbb_stable_value = kalman_filtered; // 临时用当前值
-000160  486e              LDR      r0,|L13.796|
+000160  486f              LDR      r0,|L13.800|
 000162  6005              STR      r5,[r0,#0]  ; wbb_stable_value
 ;;;358                current_stable = kalman_filtered;
 000164  9507              STR      r5,[sp,#0x1c]
@@ -889,7 +889,7 @@
 ;;;360            
 ;;;361            // 计算去皮后的浮点值
 ;;;362            float current_float = current_stable - pi_value_float;
-000166  4870              LDR      r0,|L13.808|
+000166  4871              LDR      r0,|L13.812|
 000168  6801              LDR      r1,[r0,#0]  ; pi_value_float
 00016a  9807              LDR      r0,[sp,#0x1c]
 00016c  f7fffffe          BL       __aeabi_fsub
@@ -948,10 +948,10 @@
 0001b6  d113              BNE      |L13.480|
 ;;;380    			{
 ;;;381    //				displayNumberOnTube(counter/10);
-;;;382    				if(show_value+xiuzheng<=26)
+;;;382    				if(show_value+xiuzheng<=30)
 0001b8  980c              LDR      r0,[sp,#0x30]
 0001ba  1820              ADDS     r0,r4,r0
-0001bc  281a              CMP      r0,#0x1a
+0001bc  281e              CMP      r0,#0x1e
 0001be  d803              BHI      |L13.456|
 ;;;383    				{
 ;;;384    					displayNumberOnTube(0);
@@ -980,48 +980,48 @@
 0001d6  24af              MOVS     r4,#0xaf
 0001d8  00a4              LSLS     r4,r4,#2
 ;;;397    			Buzzer_PlayMelody(happyBirthday);
-0001da  4854              LDR      r0,|L13.812|
+0001da  4855              LDR      r0,|L13.816|
 0001dc  f7fffffe          BL       Buzzer_PlayMelody
                   |L13.480|
 ;;;398    		}			
 ;;;399            WDT->WDT_CON |= WDT_CON_CLRWDT; //清watchdog
-0001e0  4853              LDR      r0,|L13.816|
+0001e0  4854              LDR      r0,|L13.820|
 0001e2  6bc0              LDR      r0,[r0,#0x3c]
 0001e4  2101              MOVS     r1,#1
 0001e6  4308              ORRS     r0,r0,r1
-0001e8  4951              LDR      r1,|L13.816|
+0001e8  4952              LDR      r1,|L13.820|
 0001ea  63c8              STR      r0,[r1,#0x3c]
 ;;;400            if(TK_TouchKeyStatus&0x80)
-0001ec  4851              LDR      r0,|L13.820|
+0001ec  4852              LDR      r0,|L13.824|
 0001ee  7800              LDRB     r0,[r0,#0]  ; TK_TouchKeyStatus
 0001f0  2180              MOVS     r1,#0x80
 0001f2  4008              ANDS     r0,r0,r1
 0001f4  2800              CMP      r0,#0
-0001f6  d054              BEQ      |L13.674|
+0001f6  d056              BEQ      |L13.678|
 ;;;401            {
 ;;;402                TK_TouchKeyStatus &= 0x7f;
-0001f8  484e              LDR      r0,|L13.820|
+0001f8  484f              LDR      r0,|L13.824|
 0001fa  7800              LDRB     r0,[r0,#0]  ; TK_TouchKeyStatus
 0001fc  0640              LSLS     r0,r0,#25
 0001fe  0e40              LSRS     r0,r0,#25
-000200  494c              LDR      r1,|L13.820|
+000200  494d              LDR      r1,|L13.824|
 000202  7008              STRB     r0,[r1,#0]
 ;;;403                TK_exKeyValueFlag = TK_TouchKeyScan();
 000204  f7fffffe          BL       TK_TouchKeyScan
-000208  494b              LDR      r1,|L13.824|
+000208  494c              LDR      r1,|L13.828|
 00020a  6008              STR      r0,[r1,#0]  ; TK_exKeyValueFlag
 ;;;404                DebounceTouchKey();
 00020c  f7fffffe          BL       DebounceTouchKey
 ;;;405                if(keyPressed)
-000210  484a              LDR      r0,|L13.828|
+000210  484b              LDR      r0,|L13.832|
 000212  7800              LDRB     r0,[r0,#0]  ; keyPressed
 000214  2800              CMP      r0,#0
-000216  d042              BEQ      |L13.670|
+000216  d044              BEQ      |L13.674|
 ;;;406                {
 ;;;407                    ChangeTouchKeyvalue();
 000218  f7fffffe          BL       ChangeTouchKeyvalue
 ;;;408                    if(exKeyValue==1)
-00021c  4848              LDR      r0,|L13.832|
+00021c  4849              LDR      r0,|L13.836|
 00021e  7800              LDRB     r0,[r0,#0]  ; exKeyValue
 000220  2801              CMP      r0,#1
 000222  d112              BNE      |L13.586|
@@ -1043,19 +1043,19 @@
 000238  900c              STR      r0,[sp,#0x30]
                   |L13.570|
 ;;;413                        pi_value_float = current_stable; // 去皮用当前稳定值（更准！）
-00023a  493b              LDR      r1,|L13.808|
+00023a  493c              LDR      r1,|L13.812|
 00023c  9807              LDR      r0,[sp,#0x1c]
 00023e  6008              STR      r0,[r1,#0]  ; pi_value_float
 ;;;414                        WBB_Reset(); // 去皮后重置缓冲区，避免旧漂移影响
 000240  f7fffffe          BL       WBB_Reset
 ;;;415                        PB_OT(10);
 000244  2001              MOVS     r0,#1
-000246  4930              LDR      r1,|L13.776|
+000246  4931              LDR      r1,|L13.780|
 000248  7688              STRB     r0,[r1,#0x1a]
                   |L13.586|
 ;;;416                    }
 ;;;417                    if(exKeyValue==2)
-00024a  483d              LDR      r0,|L13.832|
+00024a  483e              LDR      r0,|L13.836|
 00024c  7800              LDRB     r0,[r0,#0]  ; exKeyValue
 00024e  2802              CMP      r0,#2
 000250  d108              BNE      |L13.612|
@@ -1064,194 +1064,198 @@
 000252  2000              MOVS     r0,#0
 000254  900d              STR      r0,[sp,#0x34]
 ;;;420                        pi_value_float = 0.0f;
-000256  4934              LDR      r1,|L13.808|
+000256  4935              LDR      r1,|L13.812|
 000258  6008              STR      r0,[r1,#0]  ; pi_value_float
 ;;;421                        WBB_Reset(); // 清零去皮也重置
 00025a  f7fffffe          BL       WBB_Reset
 ;;;422                        PB_OT(13);
 00025e  2001              MOVS     r0,#1
-000260  4929              LDR      r1,|L13.776|
+000260  492a              LDR      r1,|L13.780|
 000262  7748              STRB     r0,[r1,#0x1d]
                   |L13.612|
 ;;;423                    }
 ;;;424                    if(exKeyValue==3)
-000264  4836              LDR      r0,|L13.832|
+000264  4837              LDR      r0,|L13.836|
 000266  7800              LDRB     r0,[r0,#0]  ; exKeyValue
 000268  2803              CMP      r0,#3
-00026a  d102              BNE      |L13.626|
+00026a  d104              BNE      |L13.630|
 ;;;425                    {
-;;;426                        Buzzer_PlayMelody(happyBirthday);
-00026c  482f              LDR      r0,|L13.812|
-00026e  f7fffffe          BL       Buzzer_PlayMelody
-                  |L13.626|
-;;;427                    }
-;;;428                    if(exKeyValue==4)
-000272  4833              LDR      r0,|L13.832|
-000274  7800              LDRB     r0,[r0,#0]  ; exKeyValue
-000276  2804              CMP      r0,#4
-000278  d10e              BNE      |L13.664|
-;;;429                    {
-;;;430    					if(counter>persec*10) counter=0;
-00027a  4832              LDR      r0,|L13.836|
-00027c  4287              CMP      r7,r0
-00027e  dd01              BLE      |L13.644|
-000280  2700              MOVS     r7,#0
-000282  e001              B        |L13.648|
-                  |L13.644|
-;;;431    					else counter=persec*10+1;
-000284  4f2f              LDR      r7,|L13.836|
-000286  1c7f              ADDS     r7,r7,#1
+;;;426    					DBL();
+00026c  f7fffffe          BL       ||DBL||
+;;;427                        Buzzer_PlayMelody(happyBirthday);
+000270  482f              LDR      r0,|L13.816|
+000272  f7fffffe          BL       Buzzer_PlayMelody
+                  |L13.630|
+;;;428                    }
+;;;429                    if(exKeyValue==4)
+000276  4833              LDR      r0,|L13.836|
+000278  7800              LDRB     r0,[r0,#0]  ; exKeyValue
+00027a  2804              CMP      r0,#4
+00027c  d10e              BNE      |L13.668|
+;;;430                    {
+;;;431    					if(counter>persec*10) counter=0;
+00027e  4832              LDR      r0,|L13.840|
+000280  4287              CMP      r7,r0
+000282  dd01              BLE      |L13.648|
+000284  2700              MOVS     r7,#0
+000286  e001              B        |L13.652|
                   |L13.648|
-;;;432    					if(sleep==0)
-000288  980a              LDR      r0,[sp,#0x28]
-00028a  2800              CMP      r0,#0
-00028c  d102              BNE      |L13.660|
-;;;433    					{
-;;;434    						sleep = 1;
-00028e  2001              MOVS     r0,#1
-000290  900a              STR      r0,[sp,#0x28]
-000292  e001              B        |L13.664|
-                  |L13.660|
-;;;435    					}
-;;;436    					else
-;;;437    					{
-;;;438    						sleep = 0;
-000294  2000              MOVS     r0,#0
-000296  900a              STR      r0,[sp,#0x28]
+;;;432    					else counter=persec*10+1;
+000288  4f2f              LDR      r7,|L13.840|
+00028a  1c7f              ADDS     r7,r7,#1
+                  |L13.652|
+;;;433    					if(sleep==0)
+00028c  980a              LDR      r0,[sp,#0x28]
+00028e  2800              CMP      r0,#0
+000290  d102              BNE      |L13.664|
+;;;434    					{
+;;;435    						sleep = 1;
+000292  2001              MOVS     r0,#1
+000294  900a              STR      r0,[sp,#0x28]
+000296  e001              B        |L13.668|
                   |L13.664|
-;;;439    					}
-;;;440                    }
-;;;441                    keyPressed = 0;
+;;;436    					}
+;;;437    					else
+;;;438    					{
+;;;439    						sleep = 0;
 000298  2000              MOVS     r0,#0
-00029a  4928              LDR      r1,|L13.828|
-00029c  7008              STRB     r0,[r1,#0]
-                  |L13.670|
-;;;442                }
-;;;443                TK_Restart();
-00029e  f7fffffe          BL       TK_Restart
+00029a  900a              STR      r0,[sp,#0x28]
+                  |L13.668|
+;;;440    					}
+;;;441                    }
+;;;442                    keyPressed = 0;
+00029c  2000              MOVS     r0,#0
+00029e  4928              LDR      r1,|L13.832|
+0002a0  7008              STRB     r0,[r1,#0]
                   |L13.674|
-;;;444            }
-;;;445            {
-;;;446                unsigned int i;
-;;;447                for(i = 0; i < 1500; i++);
-0002a2  2000              MOVS     r0,#0
-0002a4  e000              B        |L13.680|
+;;;443                }
+;;;444                TK_Restart();
+0002a2  f7fffffe          BL       TK_Restart
                   |L13.678|
-0002a6  1c40              ADDS     r0,r0,#1
-                  |L13.680|
-0002a8  4927              LDR      r1,|L13.840|
-0002aa  4288              CMP      r0,r1
-0002ac  d3fb              BCC      |L13.678|
-;;;448            }
-;;;449    		counter++;
-0002ae  1c7f              ADDS     r7,r7,#1
-;;;450    		if(counter>=persec*20) counter=persec*20;
-0002b0  4826              LDR      r0,|L13.844|
-0002b2  4287              CMP      r7,r0
-0002b4  db00              BLT      |L13.696|
-0002b6  4607              MOV      r7,r0
-                  |L13.696|
-;;;451    		if(counter>10*persec)
-0002b8  4822              LDR      r0,|L13.836|
-0002ba  4287              CMP      r7,r0
-0002bc  dd03              BLE      |L13.710|
-;;;452    		{
-;;;453    			sleep = 1;
-0002be  2001              MOVS     r0,#1
-0002c0  900a              STR      r0,[sp,#0x28]
-;;;454    			DBL();
-0002c2  f7fffffe          BL       ||DBL||
-                  |L13.710|
-;;;455    		}
-;;;456    		if(counter%(persec*2)==0)
-0002c6  214f              MOVS     r1,#0x4f
-0002c8  0109              LSLS     r1,r1,#4
-0002ca  4638              MOV      r0,r7
-0002cc  f7fffffe          BL       __aeabi_idivmod
-0002d0  2900              CMP      r1,#0
-0002d2  d10e              BNE      |L13.754|
-;;;457    		{
-;;;458    			int cha;
-;;;459    			if(qian>show_value) cha=qian-show_value;
-0002d4  9909              LDR      r1,[sp,#0x24]
-0002d6  42a1              CMP      r1,r4
-0002d8  d902              BLS      |L13.736|
-0002da  9909              LDR      r1,[sp,#0x24]
-0002dc  1b08              SUBS     r0,r1,r4
-0002de  e001              B        |L13.740|
-                  |L13.736|
-;;;460    			else cha=show_value-qian;
-0002e0  9909              LDR      r1,[sp,#0x24]
-0002e2  1a60              SUBS     r0,r4,r1
+;;;445            }
+;;;446            {
+;;;447                unsigned int i;
+;;;448                for(i = 0; i < 1500; i++);
+0002a6  2000              MOVS     r0,#0
+0002a8  e000              B        |L13.684|
+                  |L13.682|
+0002aa  1c40              ADDS     r0,r0,#1
+                  |L13.684|
+0002ac  4927              LDR      r1,|L13.844|
+0002ae  4288              CMP      r0,r1
+0002b0  d3fb              BCC      |L13.682|
+;;;449            }
+;;;450    		counter++;
+0002b2  1c7f              ADDS     r7,r7,#1
+;;;451    		if(counter>=persec*40) counter=persec*40;
+0002b4  4826              LDR      r0,|L13.848|
+0002b6  4287              CMP      r7,r0
+0002b8  db00              BLT      |L13.700|
+0002ba  4607              MOV      r7,r0
+                  |L13.700|
+;;;452    		if(counter>20*persec)
+0002bc  4825              LDR      r0,|L13.852|
+0002be  4287              CMP      r7,r0
+0002c0  dd03              BLE      |L13.714|
+;;;453    		{
+;;;454    			sleep = 1;
+0002c2  2001              MOVS     r0,#1
+0002c4  900a              STR      r0,[sp,#0x28]
+;;;455    			DBL();
+0002c6  f7fffffe          BL       ||DBL||
+                  |L13.714|
+;;;456    		}
+;;;457    		if(counter%(persec*2)==0)
+0002ca  214f              MOVS     r1,#0x4f
+0002cc  0109              LSLS     r1,r1,#4
+0002ce  4638              MOV      r0,r7
+0002d0  f7fffffe          BL       __aeabi_idivmod
+0002d4  2900              CMP      r1,#0
+0002d6  d10e              BNE      |L13.758|
+;;;458    		{
+;;;459    			int cha;
+;;;460    			if(qian>show_value) cha=qian-show_value;
+0002d8  9909              LDR      r1,[sp,#0x24]
+0002da  42a1              CMP      r1,r4
+0002dc  d902              BLS      |L13.740|
+0002de  9909              LDR      r1,[sp,#0x24]
+0002e0  1b08              SUBS     r0,r1,r4
+0002e2  e001              B        |L13.744|
                   |L13.740|
-;;;461    			if(cha>20)
-0002e4  2814              CMP      r0,#0x14
-0002e6  dd02              BLE      |L13.750|
-;;;462    			{
-;;;463    				counter=0;
-0002e8  2700              MOVS     r7,#0
-;;;464    				sleep=0;
-0002ea  2100              MOVS     r1,#0
-0002ec  910a              STR      r1,[sp,#0x28]
-                  |L13.750|
-;;;465    			}
-;;;466    			qian=show_value;
-0002ee  9409              STR      r4,[sp,#0x24]
-;;;467    		}
-0002f0  bf00              NOP      
+;;;461    			else cha=show_value-qian;
+0002e4  9909              LDR      r1,[sp,#0x24]
+0002e6  1a60              SUBS     r0,r4,r1
+                  |L13.744|
+;;;462    			if(cha>20)
+0002e8  2814              CMP      r0,#0x14
+0002ea  dd02              BLE      |L13.754|
+;;;463    			{
+;;;464    				counter=0;
+0002ec  2700              MOVS     r7,#0
+;;;465    				sleep=0;
+0002ee  2100              MOVS     r1,#0
+0002f0  910a              STR      r1,[sp,#0x28]
                   |L13.754|
-;;;468        }
-0002f2  bf00              NOP      
-                  |L13.756|
-0002f4  e6a8              B        |L13.72|
-;;;469    }
-;;;470    /**
+;;;466    			}
+;;;467    			qian=show_value;
+0002f2  9409              STR      r4,[sp,#0x24]
+;;;468    		}
+0002f4  bf00              NOP      
+                  |L13.758|
+;;;469        }
+0002f6  bf00              NOP      
+                  |L13.760|
+0002f8  e6a6              B        |L13.72|
+;;;470    }
+;;;471    /**
                           ENDP
 
-0002f6  0000              DCW      0x0000
-                  |L13.760|
-                          DCD      0x44bb8000
+0002fa  0000              DCW      0x0000
                   |L13.764|
-                          DCD      0x3c23d70a
+                          DCD      0x44bb8000
                   |L13.768|
-                          DCD      kf_weight
+                          DCD      0x3c23d70a
                   |L13.772|
-                          DCD      0x40022140
+                          DCD      kf_weight
                   |L13.776|
-                          DCD      0x40011100
+                          DCD      0x40022140
                   |L13.780|
-                          DCD      wbb_index
+                          DCD      0x40011100
                   |L13.784|
-                          DCD      wbb_buffer
+                          DCD      wbb_index
                   |L13.788|
-                          DCD      wbb_full
+                          DCD      wbb_buffer
                   |L13.792|
-                          DCD      0x3f333333
+                          DCD      wbb_full
                   |L13.796|
-                          DCD      wbb_stable_value
+                          DCD      0x3f333333
                   |L13.800|
-                          DCD      0x3e99999a
+                          DCD      wbb_stable_value
                   |L13.804|
-                          DCD      0x460ca000
+                          DCD      0x3e99999a
                   |L13.808|
-                          DCD      pi_value_float
+                          DCD      0x460ca000
                   |L13.812|
-                          DCD      happyBirthday
+                          DCD      pi_value_float
                   |L13.816|
-                          DCD      0x40000300
+                          DCD      happyBirthday
                   |L13.820|
-                          DCD      TK_TouchKeyStatus
+                          DCD      0x40000300
                   |L13.824|
-                          DCD      TK_exKeyValueFlag
+                          DCD      TK_TouchKeyStatus
                   |L13.828|
-                          DCD      keyPressed
+                          DCD      TK_exKeyValueFlag
                   |L13.832|
-                          DCD      exKeyValue
+                          DCD      keyPressed
                   |L13.836|
-                          DCD      0x000018b0
+                          DCD      exKeyValue
                   |L13.840|
-                          DCD      0x000005dc
+                          DCD      0x000018b0
                   |L13.844|
+                          DCD      0x000005dc
+                  |L13.848|
+                          DCD      0x000062c0
+                  |L13.852|
                           DCD      0x00003160
 
                           AREA ||i.read_adc||, CODE, READONLY, ALIGN=2
@@ -1345,8 +1349,54 @@
 000044  02ee              DCW      0x02ee
 000046  0000              DCB      0x00,0x00
 000048  007d              DCW      0x007d
-00004a  0000              DCB      0x00,0x00
-00004c  0000              DCW      0x0000
+00004a  0100              DCB      0x01,0x00
+00004c  00fa              DCW      0x00fa
+00004e  0100              DCB      0x01,0x00
+000050  007d              DCW      0x007d
+000052  0200              DCB      0x02,0x00
+000054  0177              DCW      0x0177
+000056  0100              DCB      0x01,0x00
+000058  0177              DCW      0x0177
+00005a  0500              DCB      0x05,0x00
+00005c  0177              DCW      0x0177
+00005e  0400              DCB      0x04,0x00
+000060  02ee              DCW      0x02ee
+000062  0000              DCB      0x00,0x00
+000064  007d              DCW      0x007d
+000066  0100              DCB      0x01,0x00
+000068  00fa              DCW      0x00fa
+00006a  0100              DCB      0x01,0x00
+00006c  007d              DCW      0x007d
+00006e  0800              DCB      0x08,0x00
+000070  0177              DCW      0x0177
+000072  0600              DCB      0x06,0x00
+000074  0177              DCW      0x0177
+000076  0400              DCB      0x04,0x00
+000078  00fa              DCW      0x00fa
+00007a  0400              DCB      0x04,0x00
+00007c  007d              DCW      0x007d
+00007e  0300              DCB      0x03,0x00
+000080  0177              DCW      0x0177
+000082  0200              DCB      0x02,0x00
+000084  02ee              DCW      0x02ee
+000086  0000              DCB      0x00,0x00
+000088  007d              DCW      0x007d
+00008a  0700              DCB      0x07,0x00
+00008c  00fa              DCW      0x00fa
+00008e  0700              DCB      0x07,0x00
+000090  007d              DCW      0x007d
+000092  0600              DCB      0x06,0x00
+000094  0177              DCW      0x0177
+000096  0400              DCB      0x04,0x00
+000098  0177              DCW      0x0177
+00009a  0500              DCB      0x05,0x00
+00009c  0177              DCW      0x0177
+00009e  0400              DCB      0x04,0x00
+0000a0  02ee              DCW      0x02ee
+0000a2  0000              DCB      0x00,0x00
+0000a4  01f4              DCW      0x01f4
+0000a6  0000              DCB      0x00,0x00
+0000a8  0000              DCW      0x0000
 
                           AREA ||.data||, DATA, ALIGN=2
 
